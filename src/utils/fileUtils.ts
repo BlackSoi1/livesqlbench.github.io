@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 export interface DataEntry {
   instance_id: string;
@@ -61,23 +61,39 @@ export interface KnowledgeEntry {
 const dataDir = path.join("./data");
 
 export function getDatabases(): string[] {
-  return fs.readdirSync(dataDir)
-    .filter(item => fs.statSync(path.join(dataDir, item)).isDirectory())
-    .filter(dir => dir !== '.git');
+  return fs
+    .readdirSync(dataDir)
+    .filter((item: string) =>
+      fs.statSync(path.join(dataDir, item)).isDirectory()
+    )
+    .filter((dir: string) => dir !== ".git");
 }
 
 export function readDataFile(dbName: string): DataEntry[] {
   const filePath = path.join(dataDir, dbName, `${dbName}_data.jsonl`);
-  const content = fs.readFileSync(filePath, 'utf-8');
-  return content.split('\n')
-    .filter(line => line.trim())
-    .map(line => JSON.parse(line));
+  const content = fs.readFileSync(filePath, "utf-8");
+  return content
+    .split("\n")
+    .filter((line: string) => line.trim())
+    .map((line: string) => JSON.parse(line));
 }
 
 export function readKnowledgeFile(dbName: string): KnowledgeEntry[] {
   const filePath = path.join(dataDir, dbName, `${dbName}_kb.jsonl`);
-  const content = fs.readFileSync(filePath, 'utf-8');
-  return content.split('\n')
-    .filter(line => line.trim())
-    .map(line => JSON.parse(line));
-} 
+  const content = fs.readFileSync(filePath, "utf-8");
+  return content
+    .split("\n")
+    .filter((line: string) => line.trim())
+    .map((line: string) => JSON.parse(line));
+}
+
+export function readSchemaFile(dbName: string): { dotContent: string } {
+  const dotPath = path.join(dataDir, dbName, `public.dot`);
+
+  if (!fs.existsSync(dotPath)) {
+    throw new Error("Schema file not found");
+  }
+
+  const dotContent = fs.readFileSync(dotPath, "utf-8");
+  return { dotContent };
+}
