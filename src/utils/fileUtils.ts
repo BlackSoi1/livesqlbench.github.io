@@ -1,99 +1,81 @@
-import fs from "fs";
-import path from "path";
+import { DataEntry, KnowledgeEntry } from "./types";
 
-export interface DataEntry {
-  instance_id: string;
-  selected_database: string;
-  query: string;
-  preprocess_sql: string[];
-  clean_up_sqls: string[];
-  sol_sql: string[];
-  external_knowledge: number[];
-  test_cases: any[];
-  category: string;
-  high_level: boolean;
-  conditions: {
-    decimal: number;
-    distinct: boolean;
-  };
-  amb_user_query: string;
-  user_query_ambiguity: {
-    critical_ambiguity: Array<{
-      term: string;
-      sql_snippet: string;
-      is_mask: boolean;
-      type: string;
-    }>;
-    non_critical_ambiguity: Array<{
-      term: string;
-      sql_snippet: string;
-      is_mask: boolean;
-      type: string;
-    }>;
-  };
-  knowledge_ambiguity: Array<{
-    term: string;
-    sql_snippet: string;
-    is_mask: boolean;
-    type: string;
-    deleted_knowledge: number;
-  }>;
-  follow_up?: {
-    query: string;
-    sol_sql: string;
-    external_knowledge: number[];
-    type: string;
-    test_cases: any[];
-    category: string;
-  };
-}
+// 预定义的数据库列表
+const DATABASES = [
+  "alien",
+  "archeology",
+  "basketball",
+  "cinema",
+  "college",
+  "company",
+  "concert",
+  "covid",
+  "flight",
+  "game",
+  "hospital",
+  "library",
+  "movie",
+  "music",
+  "restaurant",
+  "school",
+  "soccer",
+  "university",
+];
 
-export interface KnowledgeEntry {
-  id: number;
-  knowledge: string;
-  description: string;
-  definition: string;
-  type: string;
-  children_knowledge: number;
-}
-
-// set a new dir for the data
-const dataDir = path.join("./data");
+// 预定义的大数据库列表
+const LARGE_DATABASES = ["alien_large", "archeology_large"];
 
 export function getDatabases(): string[] {
-  return fs
-    .readdirSync(dataDir)
-    .filter((item: string) =>
-      fs.statSync(path.join(dataDir, item)).isDirectory()
-    )
-    .filter((dir: string) => dir !== ".git");
+  return DATABASES;
 }
 
-export function readDataFile(dbName: string): DataEntry[] {
-  const filePath = path.join(dataDir, dbName, `${dbName}_data.jsonl`);
-  const content = fs.readFileSync(filePath, "utf-8");
-  return content
-    .split("\n")
-    .filter((line: string) => line.trim())
-    .map((line: string) => JSON.parse(line));
+export function getLargeDatabases(): string[] {
+  return LARGE_DATABASES;
 }
 
-export function readKnowledgeFile(dbName: string): KnowledgeEntry[] {
-  const filePath = path.join(dataDir, dbName, `${dbName}_kb.jsonl`);
-  const content = fs.readFileSync(filePath, "utf-8");
-  return content
-    .split("\n")
-    .filter((line: string) => line.trim())
-    .map((line: string) => JSON.parse(line));
-}
-
-export function readSchemaFile(dbName: string): { dotContent: string } {
-  const dotPath = path.join(dataDir, dbName, `public.dot`);
-
-  if (!fs.existsSync(dotPath)) {
-    throw new Error("Schema file not found");
+export async function readDataFile(dbName: string): Promise<DataEntry[]> {
+  try {
+    const response = await fetch(
+      `/livesqlbench.github.io/data/${dbName}/data.json`
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to load data for ${dbName}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error loading data for ${dbName}:`, error);
+    return [];
   }
+}
 
-  const dotContent = fs.readFileSync(dotPath, "utf-8");
-  return { dotContent };
+export async function readKnowledgeFile(
+  dbName: string
+): Promise<KnowledgeEntry[]> {
+  try {
+    const response = await fetch(
+      `/livesqlbench.github.io/data/${dbName}/knowledge.json`
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to load knowledge for ${dbName}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error loading knowledge for ${dbName}:`, error);
+    return [];
+  }
+}
+
+export async function readSchemaFile(dbName: string): Promise<any> {
+  try {
+    const response = await fetch(
+      `/livesqlbench.github.io/data/${dbName}/schema.json`
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to load schema for ${dbName}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error loading schema for ${dbName}:`, error);
+    return null;
+  }
 }
