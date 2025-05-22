@@ -1,30 +1,20 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { NextResponse } from "next/server";
+import { readSchemaFile } from "@/utils/fileUtils";
+
+export const dynamic = "force-static";
 
 export async function GET(
   request: Request,
-  context: { params: Promise<{ db: string }> }
+  context: { params: { db: string } }
 ) {
-  const { db: dbName } = await context.params;
-  
   try {
-    const dotPath = path.join(process.cwd(), 'data', dbName, `public.dot`);
-    
-    if (!fs.existsSync(dotPath)) {
-      return NextResponse.json(
-        { error: 'Schema file not found' },
-        { status: 404 }
-      );
-    }
-
-    const dotContent = fs.readFileSync(dotPath, 'utf-8');
-    return NextResponse.json({ dotContent });
+    const { db: dbName } = context.params;
+    const data = readSchemaFile(dbName);
+    return NextResponse.json(data);
   } catch (error) {
-    console.error('Error reading schema file:', error);
     return NextResponse.json(
-      { error: 'Failed to read schema file' },
+      { error: "Failed to get schema" },
       { status: 500 }
     );
   }
-} 
+}
