@@ -5,10 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath:
-    process.env.NODE_ENV === "production" ? "/livesqlbench.github.io" : "",
-  assetPrefix:
-    process.env.NODE_ENV === "production" ? "/livesqlbench.github.io" : "",
+  basePath: "/livesqlbench.github.io",
+  assetPrefix: "/livesqlbench.github.io/",
   eslint: {
     ignoreDuringBuilds: true,
   },
