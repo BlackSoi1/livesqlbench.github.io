@@ -32,7 +32,7 @@ const Introduction = () => {
                             },
                             {
                                 title: "Live User Queries and SQL",
-                                desc: "Each task pairs unambiguous user queries with annotated, gold-standard SQL statements."
+                                desc: "Each task pairs unambiguous user queries with annotated, gold-standard SQL statements. The user queries are grounded in external knowledge, with medium to hard complexity SQL statements."
                             },
                             {
                                 title: "Contextual Reasoning",

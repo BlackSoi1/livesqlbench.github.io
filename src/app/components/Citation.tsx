@@ -8,7 +8,7 @@ const Citation = () => {
     {
       id: 'livesqlbench',
       title: 'LiveSQLBench Citation',
-      content: `@misc{livesqlbench2024,
+      content: `@misc{livesqlbench2025,
   author       = {BIRD Team},
   title        = {LiveSQLBench: A Dynamic and Contamination-Free Benchmark for Evaluating LLMs on Real-World Text-to-SQL Tasks},
   year         = {2024},
