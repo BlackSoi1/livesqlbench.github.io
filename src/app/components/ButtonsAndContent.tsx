@@ -57,20 +57,6 @@ const ButtonsAndContent = () => {
               <p>BIRD Team, HKU</p>
               <p>Google Cloud</p>
             </div>
-
-            {/* <div>
-              <h4 className="font-semibold mb-2">Contributing Authors</h4>
-              <p>Huonan, HKU</p>
-              <p>Huonan, HKU</p>
-            </div>
-
-            <div id="institutions">
-              <h4 className="font-semibold mb-2">Institutions</h4>
-              <p>Huonan, HKU</p>
-              <p>Huonan, HKU</p>
-              <p>Huonan, HKU</p>
-              <p>Huonan, HKU</p>
-            </div> */}
           </div>
         </div>
       )}

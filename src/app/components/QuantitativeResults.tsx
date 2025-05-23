@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowDown } from 'lucide-react';
+import { getBasePath } from '@/utils/fileUtils';
 
 interface ModelResult {
   name: string;
@@ -10,6 +11,7 @@ interface ModelResult {
   organization: string;
   link: string;
   date: string;
+  hasReasoning: boolean;
 }
 
 const Leaderboard = () => {
@@ -20,72 +22,79 @@ const Leaderboard = () => {
       { 
         name: 'o3-mini-2025-01-31',
         completionRate: 42.59,
-        logo: '/openai-logomark.png',
+        logo: `${getBasePath()}/model_logos/openai_reasoning.png`,
         fullName: 'o3-mini',
         category: 'modelBase',
         organization: 'OpenAI',
         link: 'https://openai.com',
-        date: '2025-05-23'
+        date: '2025-05-23',
+        hasReasoning: true
       },
       { 
         name: 'qwen-qwen3-235b-a22b',
         completionRate: 35.93,
-        logo: '/qwen_logo.png',
+        logo: `${getBasePath()}/model_logos/qwen.png`,
         fullName: 'Qwen 3 235B',
         category: 'modelBase',
         organization: 'Alibaba',
         link: 'https://qwenlm.github.io',
-        date: '2025-05-23'
+        date: '2025-05-23',
+        hasReasoning: false
       },
       { 
         name: 'gemini-2-0-flash-001',
         completionRate: 35.56,
-        logo: '/google-gemini-icon.png',
+        logo: `${getBasePath()}/model_logos/google-gemini-icon.png`,
         fullName: 'Gemini 2.0 Flash',
         category: 'modelBase',
         organization: 'Google',
         link: 'https://deepmind.google/technologies/gemini/',
-        date: '2025-05-23'
+        date: '2025-05-23',
+        hasReasoning: false
       },
       { 
         name: 'gpt-4o-2024-11-20',
         completionRate: 34.81,
-        logo: '/openai-logomark.png',
+        logo: `${getBasePath()}/model_logos/openai.png`,
         fullName: 'GPT-4o',
         category: 'modelBase',
         organization: 'OpenAI',
         link: 'https://openai.com',
-        date: '2025-05-23'
+        date: '2025-05-23',
+        hasReasoning: false
       },
       { 
         name: 'claude-3-7-sonnet-20250219',
         completionRate: 32.96,
-        logo: '/claude_logo.png',
+        logo: `${getBasePath()}/model_logos/claude_logo.png`,
         fullName: 'Claude 3.7 Sonnet',
         category: 'modelBase',
         organization: 'Anthropic',
         link: 'https://www.anthropic.com',
-        date: '2025-05-23'
+        date: '2025-05-23',
+        hasReasoning: false
       },
       { 
         name: 'deepsseek-deepseek-r1',
         completionRate: 0,
-        logo: '/deepseek_logo.png',
+        logo: `${getBasePath()}/model_logos/deepseek_logo.png`,
         fullName: 'DeepSeek R1',
         category: 'modelBase',
         organization: 'DeepSeek',
         link: 'https://deepseek.com',
-        date: '2025-05-23'
+        date: '2025-05-23',
+        hasReasoning: true
       },
       { 
         name: 'deepsseek-deepseek-chat',
         completionRate: 0,
-        logo: '/deepseek_logo.png',
+        logo: `${getBasePath()}/model_logos/deepseek_logo.png`,
         fullName: 'DeepSeek Chat',
         category: 'modelBase',
         organization: 'DeepSeek',
         link: 'https://deepseek.com',
-        date: '2025-05-23'
+        date: '2025-05-23',
+        hasReasoning: false
       }
     ],
     agent: [] // Empty for now, will be populated later
@@ -170,13 +179,16 @@ const Leaderboard = () => {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50 border-b">
+                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
+                      Rank
+                    </th>
                     <th className="h-12 px-4 text-left align-middle font-medium text-gray-600">
                       Model
                     </th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-gray-600">
+                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
                       Organization
                     </th>
-                    <th className="h-12 px-4 text-right align-middle font-medium text-gray-600">
+                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
                       Success Rate (%) <ArrowDown className="inline h-4 w-4 text-gray-400" />
                     </th>
                     <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
@@ -196,23 +208,36 @@ const Leaderboard = () => {
                           index === 0 ? 'bg-blue-50' : ''
                         }`}
                       >
+                        <td className="p-4 align-middle text-center">
+                          {model.completionRate > 0 ? (
+                            <div className="flex items-center justify-center gap-1">
+                              {index === 0 && <span className="text-yellow-500">🥇</span>}
+                              {index === 1 && <span className="text-gray-400">🥈</span>}
+                              {index === 2 && <span className="text-amber-600">🥉</span>}
+                              <span className={`font-medium ${
+                                index < 3 ? 'text-gray-700' : 'text-gray-500'
+                              }`}>
+                                #{index + 1}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
+                        </td>
                         <td className="p-4 align-middle">
-                          <div className="flex items-center gap-3">
-                            {index === 0 && (
-                              <span className="text-yellow-500">🏆</span>
-                            )}
+                          <div className="flex items-center gap-3 justify-start">
                             <img
                               src={model.logo}
                               alt={`${model.fullName} logo`}
-                              className="w-5 h-5 object-contain"
+                              className={`w-5 h-5 object-contain ${model.hasReasoning ? 'filter grayscale' : ''}`}
                             />
                             <span className="font-medium">{model.fullName}</span>
                           </div>
                         </td>
-                        <td className="p-4 align-middle">
-                          {model.organization}
+                        <td className="p-4 align-middle text-center"> 
+                          <span className="italic text-gray-500">{model.organization}</span>
                         </td>
-                        <td className="p-4 align-middle text-right font-medium">
+                        <td className="p-4 align-middle text-center font-medium">
                           {model.completionRate > 0 ? `${model.completionRate.toFixed(2)}%` : 'N/A'}
                         </td>
                         <td className="p-4 align-middle text-center">
@@ -232,7 +257,7 @@ const Leaderboard = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={5} className="p-8 text-center text-gray-500">
+                      <td colSpan={6} className="p-8 text-center text-gray-500">
                         No results available for this category yet.
                       </td>
                     </tr>
@@ -242,7 +267,7 @@ const Leaderboard = () => {
             </div>
             
             <p className="mt-4 text-sm text-gray-600">
-              <span className="font-medium">Note:</span> Results are based on LiveSQLBench-Lite (270 SQL tasks across 18 databases), including both SELECT queries and management operations.
+              <span className="font-medium">Note:</span> Results are based on LiveSQLBench-Lite (270 SQL tasks across 18 databases), including both SELECT queries and management operations; Model with reasoning ability is marked with a grayed-out logo. 
             </p>
           </div>
         </div>
