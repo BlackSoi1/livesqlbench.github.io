@@ -11,14 +11,24 @@ const Introduction = () => {
             <div className="space-y-4">
                 <div className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-xl shadow-sm">
                     <p className="text-base text-gray-700 leading-relaxed mb-4">
-                        <strong className="text-blue-600">LiveSQLBench</strong> is a contamination-free, continuously evolving benchmark designed to evaluate LLMs on complex, real-world SQL tasks. The current version, <strong className="text-purple-600">LiveSQLBench-Lite</strong>, features 18 databases with 270 samples, serving as our initial release. We are actively expanding in two dimensions: (1) increasing the number of databases and tasks to 600+ samples, and (2) creating <strong className="text-indigo-600">Large Versions (Industrial Level)</strong> of each database, featuring 40+ tables and 800+ columns, significantly expanding the complexity and scale.
+                        <strong className="text-blue-600">LiveSQLBench (BIRD-SQL Pro v0.5)</strong> is a contamination-free, continuously evolving benchmark designed to evaluate LLMs on complex, real-world text-to-SQL tasks, featuring diverse real-world user queries, including <strong className="text-black-600">Business Intelligence (BI)</strong>, <strong className="text-black-600">CRUD operations</strong>, etc. Each release will include <strong className="text-black-600">50 new, fully open-source DBs</strong> curated by the BIRD team through expert collaboration and continuous improvement. It will cover a wide range of database sizes, from <strong className="text-black-600">end-user level (around 127 columns)</strong> to <strong className="text-black-600">industrial level (1340+ columns)</strong>.
+                    </p>
+                    <p className="text-base text-gray-700 leading-relaxed mb-4">
+                        {/* Each release will include <strong className="text-blue-600">50 new, fully open-source DBs</strong> curated by the BIRD team through expert collaboration and continuous improvement. It will cover a wide range of database sizes, from <strong className="text-blue-600">end-user level (around 127 columns)</strong> to <strong className="text-blue-600">industrial level (1340+ columns)</strong>. */}
+                    </p>
+                    <p className="text-base text-gray-700 leading-relaxed mb-4">
+                        Currently, we release a <strong className="text-purple-600">LiveSQLBench-Base-Lite</strong>, featuring 18 end-user level databases with 270 tasks and the JSON operation for trial. 
+                    </p>
+                    <p className="text-base text-gray-700 leading-relaxed mb-4">
+                        The following are the features of the <strong className="text-blue-600">LiveSQLBench</strong> benchmark:
+                        {/* We are actively expanding in two dimensions: (1) increasing the number of databases and tasks to 600+ tasks, and (2) creating <strong className="text-indigo-600">Large Versions (Industrial Level)</strong> of each database, featuring 40+ tables and 800+ columns, significantly expanding the complexity and scale. */}
                     </p>
 
                     <ul className="space-y-2">
                         {[
                             {
                                 title: "Live Databases",
-                                desc: "Constructed dynamically from extensive and regularly updated CSV datasets, with both base and large versions (40+ tables with 800+ columns each DB) to test scalability."
+                                desc: "Constructed dynamically from extensive and regularly updated CSV datasets, with both base (user-end level) and large (industrial level) versions (1340+ columns each DB) to test scalability."
                             },
                             {
                                 title: "Live User Queries and SQL",
@@ -26,10 +36,10 @@ const Introduction = () => {
                             },
                             {
                                 title: "Contextual Reasoning",
-                                desc: "Every database scenario includes an external knowledge document for grounding beyond the schema. Knowledge has dependencies, requiring the LLM's multi-hop reasoning ability."
+                                desc: "Every database scenario includes a hierarchical knowledge base (HKB) in which each knowledge is related to others, which requires LLM's multi-hop reasoning ability."
                             },
                             {
-                                title: "Full SQL Spectrum",
+                                title: "The First Full SQL Spectrum",
                                 desc: "Supports not just SELECT (Business Intelligence) queries, but also CRUD (e.g., UPDATE, CREATE, and other database management operations) queries."
                             },
                             {
@@ -37,8 +47,8 @@ const Introduction = () => {
                                 desc: "Each question includes verifiable test cases for accurate, reproducible scoring."
                             },
                             {
-                                title: "Truly Live",
-                                desc: "New databases and tasks are added over time, with both base and large versions, to ensure fresh, realistic evaluation conditions at varying scales of complexity."
+                                title: "Truly Live & Hidden Test",
+                                desc: "New databases and tasks are added over time. Each release features both open development and hidden test phases. The hidden test set from each release becomes the open development set for the next release, ensuring continuous evolution and fair evaluation."
                             }
                         ].map((item, index) => (
                             <li key={index} className="flex items-start space-x-2">
@@ -55,7 +65,7 @@ const Introduction = () => {
                 </div>
 
                 <p className="text-base text-gray-700 leading-relaxed italic border-l-4 border-blue-500 pl-4 py-1">
-                    LiveSQLBench offers a robust, real-world setting to drive progress in LLMs' ability to understand, interact with, and manage dynamic database environments.
+                    <strong className="text-blue-600">LiveSQLBench</strong>'s updating databases, tasks, and HKB support <a href="https://github.com/bird-bench/BIRD-Interact" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 hover:underline">BIRD-Interact</a>'s conversational and agentic evaluation. <strong className="text-blue-600">BIRD-Interact</strong> evaluates LLMs' text-to-SQL ability in dynamic interactive settings with database and user simulation.
                 </p>
             </div>
         </div>

@@ -217,7 +217,7 @@ const Leaderboard = () => {
                               <span className={`font-medium ${
                                 index < 3 ? 'text-gray-700' : 'text-gray-500'
                               }`}>
-                                #{index + 1}
+                                {index + 1}
                               </span>
                             </div>
                           ) : (
@@ -267,7 +267,7 @@ const Leaderboard = () => {
             </div>
             
             <p className="mt-4 text-sm text-gray-600">
-              <span className="font-medium">Note:</span> Results are based on LiveSQLBench-Lite (270 SQL tasks across 18 databases), including both SELECT queries and management operations; Model with reasoning ability is marked with a grayed-out logo. 
+              <span className="font-medium">Note:</span> Results are based on LiveSQLBench-Base-Lite (270 tasks across 18 end-user level databases), including both SELECT queries and management operations; Model with reasoning ability is marked with a grayed-out logo. 
             </p>
           </div>
         </div>

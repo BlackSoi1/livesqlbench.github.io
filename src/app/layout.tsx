@@ -11,7 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "LiveSQLBench",
-  description: "A Dynamic and Contamination-Free Benchmark for Evaluating LLMs on Real-World SQL Tasks",
+  description: "A Dynamic and Contamination-Free Benchmark for Evaluating LLMs on Real-World Text-to-SQL Tasks",
   icons: {
     icon: [
       { url: `${getBasePath()}/icon.png` },

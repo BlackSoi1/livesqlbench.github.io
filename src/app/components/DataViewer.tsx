@@ -303,12 +303,9 @@ export default function DataViewer() {
           </h2>
           <div className="text-gray-600 max-w-3xl mx-auto space-y-2">
             <p>
-              Explore{" "}
-              <strong className="text-purple-600">LiveSQLBench-Lite</strong>{" "}
-              sampled data, our initial release featuring 270 SQL tasks across
-              18 diverse databases. Each task features unambiguous user queries
-              grounded in external knowledge, with medium to hard complexity SQL
-              statements.
+              Please explore{" "}
+              <strong className="text-purple-600">LiveSQLBench-Base-Lite</strong>{" "}
+              sampled DB, tasks, and HKB, our initial release featuring 270 tasks across 18 end-user level databases. Each task features unambiguous user queries grounded in external knowledge, with medium to hard complexity SQL statements.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-3">
               <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
@@ -338,9 +335,8 @@ export default function DataViewer() {
             </div>
             <div className="mt-4 p-3 bg-indigo-50 rounded-lg border border-indigo-100">
               <p className="text-sm text-indigo-700">
-                <strong>Large Version Preview:</strong> We are currently
-                developing large versions of each database, featuring 40+ tables
-                and 800+ columns. Demo versions of{" "}
+                <strong>Large Version (Industrial Level) Preview:</strong> We are currently
+                developing large versions of each database, featuring 1340+ columns. Demo versions of{" "}
                 <code className="px-1 py-0.5 bg-indigo-100 rounded">
                   alien_large
                 </code>{" "}

@@ -10,7 +10,7 @@ const Citation = () => {
       title: 'LiveSQLBench Citation',
       content: `@misc{livesqlbench2024,
   author       = {BIRD Team},
-  title        = {LiveSQLBench: A Dynamic and Contamination-Free Benchmark for Evaluating LLMs on Real-World SQL Tasks},
+  title        = {LiveSQLBench: A Dynamic and Contamination-Free Benchmark for Evaluating LLMs on Real-World Text-to-SQL Tasks},
   year         = {2024},
   howpublished = {https://github.com/bird-bench/livesqlbench},
   note         = {Accessed: 2025-05-22}

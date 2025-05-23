@@ -22,7 +22,7 @@ const LogoAndTitle = () => {
           LiveSQLBench
         </h1>
         <h2 className="text-2xl font-bold text-gray-900 mt-3 mb-3 leading-tight">
-          A Dynamic and Contamination-Free Benchmark for Evaluating LLMs on Real-World SQL Tasks
+          A Dynamic and Contamination-Free Benchmark for Evaluating LLMs on Real-World Text-to-SQL Tasks
         </h2>
       </div>
     </div>

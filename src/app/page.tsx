@@ -5,6 +5,7 @@ import type { DataEntry, KnowledgeEntry } from '@/utils/fileUtils';
 import SqlViewer from '@/components/SqlViewer';
 import QuantitativeResults from './components/QuantitativeResults';
 import DiscussionSection from './components/DiscussionSection';
+import StayTunedSection from './components/StayTunedSection';
 import RelatedArticles from './components/RelatedArticles';
 import Citation from './components/Citation';
 import Dataset from './components/Dataset';
@@ -52,6 +53,9 @@ export default function Page() {
       
       {/* Discussion Section */}
       <DiscussionSection />
+      
+      {/* Stay Tuned Section */}
+      <StayTunedSection />
       
       {/* Related Articles */}
       <RelatedArticles />
