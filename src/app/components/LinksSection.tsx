@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { FileText } from 'lucide-react'
+import { getBasePath } from '@/utils/fileUtils'
 
 const LinksSection = () => {
   return (
@@ -11,7 +12,7 @@ const LinksSection = () => {
       </Link>
       <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-gray-900">
         <Image
-          src="/hg.png"
+          src={`${getBasePath()}/hg.png`}
           alt="Huggingface"
           width={20}
           height={20}
@@ -22,7 +23,7 @@ const LinksSection = () => {
       </Link>
       <Link href="https://github.com/bird-bench/livesqlbench" className="flex items-center gap-2 text-gray-700 hover:text-gray-900">
         <Image
-          src="/github.png"
+          src={`${getBasePath()}/github.png`}
           alt="GitHub"
           width={20}
           height={20}

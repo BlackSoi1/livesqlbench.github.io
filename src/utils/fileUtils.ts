@@ -1,25 +1,19 @@
-import { DataEntry, KnowledgeEntry } from "./types";
+import type { DataEntry, KnowledgeEntry } from "./types";
+
+// Re-export the types
+export type { DataEntry, KnowledgeEntry };
+
+// Get the base path for assets in GitHub Pages
+export function getBasePath(): string {
+  // In development, use empty string (no base path)
+  // In production, use the GitHub Pages base path
+  return process.env.NODE_ENV === 'production' ? "/livesqlbench.github.io" : "";
+}
 
 // 预定义的数据库列表
 const DATABASES = [
   "alien",
-  "archeology",
-  "basketball",
-  "cinema",
-  "college",
-  "company",
-  "concert",
-  "covid",
-  "flight",
-  "game",
-  "hospital",
-  "library",
-  "movie",
-  "music",
-  "restaurant",
-  "school",
-  "soccer",
-  "university",
+  "archeology"
 ];
 
 // 预定义的大数据库列表
@@ -33,15 +27,24 @@ export function getLargeDatabases(): string[] {
   return LARGE_DATABASES;
 }
 
+// Helper function to parse JSONL file
+async function parseJSONL(response: Response): Promise<any[]> {
+  const text = await response.text();
+  return text
+    .split('\n')
+    .filter(line => line.trim()) // Remove empty lines
+    .map(line => JSON.parse(line));
+}
+
 export async function readDataFile(dbName: string): Promise<DataEntry[]> {
   try {
     const response = await fetch(
-      `/livesqlbench.github.io/data/${dbName}/data.json`
+      `${getBasePath()}/data/${dbName}/${dbName}_data.jsonl`
     );
     if (!response.ok) {
       throw new Error(`Failed to load data for ${dbName}`);
     }
-    return await response.json();
+    return await parseJSONL(response);
   } catch (error) {
     console.error(`Error loading data for ${dbName}:`, error);
     return [];
@@ -53,12 +56,12 @@ export async function readKnowledgeFile(
 ): Promise<KnowledgeEntry[]> {
   try {
     const response = await fetch(
-      `/livesqlbench.github.io/data/${dbName}/knowledge.json`
+      `${getBasePath()}/data/${dbName}/${dbName}_kb.jsonl`
     );
     if (!response.ok) {
       throw new Error(`Failed to load knowledge for ${dbName}`);
     }
-    return await response.json();
+    return await parseJSONL(response);
   } catch (error) {
     console.error(`Error loading knowledge for ${dbName}:`, error);
     return [];
@@ -68,12 +71,13 @@ export async function readKnowledgeFile(
 export async function readSchemaFile(dbName: string): Promise<any> {
   try {
     const response = await fetch(
-      `/livesqlbench.github.io/data/${dbName}/schema.json`
+      `${getBasePath()}/data/${dbName}/public.dot`
     );
     if (!response.ok) {
       throw new Error(`Failed to load schema for ${dbName}`);
     }
-    return await response.json();
+    const dotContent = await response.text();
+    return { dotContent };
   } catch (error) {
     console.error(`Error loading schema for ${dbName}:`, error);
     return null;

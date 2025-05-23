@@ -56,15 +56,17 @@ export default function DataViewer() {
       if (!selectedDb) return;
 
       try {
-        const [dataResult, knowledgeResult, schemaResult] = await Promise.all([
+        const [dataEntries, knowledgeEntries, schemaData] = await Promise.all([
           readDataFile(selectedDb),
           readKnowledgeFile(selectedDb),
           readSchemaFile(selectedDb),
         ]);
 
-        setData(dataResult);
-        setKnowledge(knowledgeResult);
-        setSchema(schemaResult);
+        setData(dataEntries);
+        setKnowledge(knowledgeEntries);
+        if (schemaData?.dotContent) {
+          setSchemaDot(schemaData.dotContent);
+        }
       } catch (error) {
         console.error("Failed to load data:", error);
       }
@@ -83,26 +85,16 @@ export default function DataViewer() {
     setShowSchema(false);
 
     try {
-      const [dataResponse, knowledgeResponse, schemaResponse] =
-        await Promise.all([
-          fetch(`/api/data/${dbName}`),
-          fetch(`/api/knowledge/${dbName}`),
-          fetch(`/api/schema/${dbName}`),
-        ]);
-
-      if (!dataResponse.ok || !knowledgeResponse.ok) {
-        throw new Error("Failed to fetch data");
-      }
-
+      // Load data directly from static JSON files
       const [dataEntries, knowledgeEntries, schemaData] = await Promise.all([
-        dataResponse.json(),
-        knowledgeResponse.json(),
-        schemaResponse.ok ? schemaResponse.json() : { dotContent: null },
+        readDataFile(dbName),
+        readKnowledgeFile(dbName),
+        readSchemaFile(dbName),
       ]);
 
       setData(dataEntries);
       setKnowledge(knowledgeEntries);
-      if (schemaData.dotContent) {
+      if (schemaData?.dotContent) {
         setSchemaDot(schemaData.dotContent);
       }
     } catch (err) {
@@ -622,7 +614,7 @@ export default function DataViewer() {
                                 </h5>
                                 <div className="space-y-3">
                                   {selectedEntry.external_knowledge.map(
-                                    (id) => {
+                                    (id: number) => {
                                       const knowledgeEntry =
                                         getKnowledgeById(id);
                                       return (

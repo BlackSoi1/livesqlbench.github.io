@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowDown } from 'lucide-react';
+import Image from 'next/image';
+import { getBasePath } from '@/utils/fileUtils';
 
 interface ModelResult {
   name: string;
@@ -17,49 +19,49 @@ const Leaderboard = () => {
       { 
         name: 'o3-mini-2025-01-31',
         completionRate: 42.59,
-        logo: '/openai-logomark.png',
+        logo: `${getBasePath()}/openai-logomark.png`,
         fullName: 'o3-mini',
         category: 'modelBase'
       },
       { 
         name: 'qwen-qwen3-235b-a22b',
         completionRate: 35.93,
-        logo: '/qwen_logo.png',
+        logo: `${getBasePath()}/qwen_logo.png`,
         fullName: 'Qwen 3 235B',
         category: 'modelBase'
       },
       { 
         name: 'gemini-2-0-flash-001',
         completionRate: 35.56,
-        logo: '/google-gemini-icon.png',
+        logo: `${getBasePath()}/google-gemini-icon.png`,
         fullName: 'Gemini 2.0 Flash',
         category: 'modelBase'
       },
       { 
         name: 'gpt-4o-2024-11-20',
         completionRate: 34.81,
-        logo: '/openai-logomark.png',
+        logo: `${getBasePath()}/openai-logomark.png`,
         fullName: 'GPT-4o',
         category: 'modelBase'
       },
       { 
         name: 'claude-3-7-sonnet-20250219',
         completionRate: 32.96,
-        logo: '/claude_logo.png',
+        logo: `${getBasePath()}/claude_logo.png`,
         fullName: 'Claude 3.7 Sonnet',
         category: 'modelBase'
       },
       { 
         name: 'deepsseek-deepseek-r1',
         completionRate: 0,
-        logo: '/deepseek_logo.png',
+        logo: `${getBasePath()}/deepseek_logo.png`,
         fullName: 'DeepSeek R1',
         category: 'modelBase'
       },
       { 
         name: 'deepsseek-deepseek-chat',
         completionRate: 0,
-        logo: '/deepseek_logo.png',
+        logo: `${getBasePath()}/deepseek_logo.png`,
         fullName: 'DeepSeek Chat',
         category: 'modelBase'
       }
