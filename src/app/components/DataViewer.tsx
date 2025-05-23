@@ -12,6 +12,7 @@ import {
   readDataFile,
   readKnowledgeFile,
   readSchemaFile,
+  getLargeDatabases,
 } from "@/utils/fileUtils";
 
 export default function DataViewer() {
@@ -40,6 +41,11 @@ export default function DataViewer() {
       try {
         const dbs = getDatabases();
         setDatabases(dbs);
+
+        // Load large databases
+        const largeDbs = getLargeDatabases();
+        setLargeDatabases(largeDbs);
+
         if (dbs.length > 0) {
           setSelectedDb(dbs[0]);
         }

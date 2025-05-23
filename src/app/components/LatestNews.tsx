@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { getBasePath } from '@/utils/fileUtils'
 
 const LatestNews = () => {
   return (
@@ -15,7 +16,7 @@ const LatestNews = () => {
           <div className="relative" style={{ width: "40px", height: "40px" }}>
             <div className="absolute" style={{ top: "-7px" }}>
               <Image
-                src="/live_button.png"
+                src={`${getBasePath()}/live_button.png`}
                 alt="livesqlbench"
                 width={40}
                 height={40}

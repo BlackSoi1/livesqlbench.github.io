@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { getBasePath } from '@/utils/fileUtils'
 
 const LogoAndTitle = () => {
   return (
@@ -8,7 +9,7 @@ const LogoAndTitle = () => {
         {/* Logo with reduced height */}
         <div className="w-80 h-56 relative">
           <Image
-            src="/livesqlbench.png"
+            src={`${getBasePath()}/livesqlbench.png`}
             alt="LiveSQLBench logo showing a cloud with SQL text inside"
             fill
             className="object-contain object-bottom"
