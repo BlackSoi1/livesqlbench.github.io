@@ -12,7 +12,7 @@ import NoticeBanner from './components/NoticeBanner';
 import LogoAndTitle from './components/LogoAndTitle';
 import LinksSection from './components/LinksSection';
 import LatestNews from './components/LatestNews';
-import PartnerLogos from './components/PartenerLogos';
+import PartnerLogos from './components/PartnerLogos';
 import ButtonsAndContent from './components/ButtonsAndContent';
 import Introduction from './components/Introduction';
 import DataViewer from './components/DataViewer';

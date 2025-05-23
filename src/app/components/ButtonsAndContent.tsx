@@ -32,7 +32,7 @@ const ButtonsAndContent = () => {
       {/* Organizing Team Content */}
       {isOrganizingTeamOpen && (
         <div className="text-center text-gray-700 font-medium">
-          Bird Team, HKU
+          BIRD Team, HKU
           <br />
           Google Cloud
         </div>

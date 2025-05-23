@@ -6,8 +6,8 @@ const PartnerLogos = () => {
     <div className="flex justify-center items-center mb-8">
       <div className="relative h-10 w-24">
         <Image
-          src={`${getBasePath()}/hku-logo.jpg`}
-          alt="HKU logo"
+          src={`${getBasePath()}/bird_fig_main.png`}
+          alt="BIRD Team logo"
           fill
           className="object-contain"
         />

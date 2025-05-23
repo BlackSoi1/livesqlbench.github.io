@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { ArrowDown } from 'lucide-react';
-import Image from 'next/image';
-import { getBasePath } from '@/utils/fileUtils';
 
 interface ModelResult {
   name: string;
@@ -9,6 +7,9 @@ interface ModelResult {
   logo: string;
   fullName: string;
   category: 'modelBase' | 'agent';
+  organization: string;
+  link: string;
+  date: string;
 }
 
 const Leaderboard = () => {
@@ -19,51 +20,72 @@ const Leaderboard = () => {
       { 
         name: 'o3-mini-2025-01-31',
         completionRate: 42.59,
-        logo: `${getBasePath()}/openai-logomark.png`,
+        logo: '/openai-logomark.png',
         fullName: 'o3-mini',
-        category: 'modelBase'
+        category: 'modelBase',
+        organization: 'OpenAI',
+        link: 'https://openai.com',
+        date: '2025-05-23'
       },
       { 
         name: 'qwen-qwen3-235b-a22b',
         completionRate: 35.93,
-        logo: `${getBasePath()}/qwen_logo.png`,
+        logo: '/qwen_logo.png',
         fullName: 'Qwen 3 235B',
-        category: 'modelBase'
+        category: 'modelBase',
+        organization: 'Alibaba',
+        link: 'https://qwenlm.github.io',
+        date: '2025-05-23'
       },
       { 
         name: 'gemini-2-0-flash-001',
         completionRate: 35.56,
-        logo: `${getBasePath()}/google-gemini-icon.png`,
+        logo: '/google-gemini-icon.png',
         fullName: 'Gemini 2.0 Flash',
-        category: 'modelBase'
+        category: 'modelBase',
+        organization: 'Google',
+        link: 'https://deepmind.google/technologies/gemini/',
+        date: '2025-05-23'
       },
       { 
         name: 'gpt-4o-2024-11-20',
         completionRate: 34.81,
-        logo: `${getBasePath()}/openai-logomark.png`,
+        logo: '/openai-logomark.png',
         fullName: 'GPT-4o',
-        category: 'modelBase'
+        category: 'modelBase',
+        organization: 'OpenAI',
+        link: 'https://openai.com',
+        date: '2025-05-23'
       },
       { 
         name: 'claude-3-7-sonnet-20250219',
         completionRate: 32.96,
-        logo: `${getBasePath()}/claude_logo.png`,
+        logo: '/claude_logo.png',
         fullName: 'Claude 3.7 Sonnet',
-        category: 'modelBase'
+        category: 'modelBase',
+        organization: 'Anthropic',
+        link: 'https://www.anthropic.com',
+        date: '2025-05-23'
       },
       { 
         name: 'deepsseek-deepseek-r1',
         completionRate: 0,
-        logo: `${getBasePath()}/deepseek_logo.png`,
+        logo: '/deepseek_logo.png',
         fullName: 'DeepSeek R1',
-        category: 'modelBase'
+        category: 'modelBase',
+        organization: 'DeepSeek',
+        link: 'https://deepseek.com',
+        date: '2025-05-23'
       },
       { 
         name: 'deepsseek-deepseek-chat',
         completionRate: 0,
-        logo: `${getBasePath()}/deepseek_logo.png`,
+        logo: '/deepseek_logo.png',
         fullName: 'DeepSeek Chat',
-        category: 'modelBase'
+        category: 'modelBase',
+        organization: 'DeepSeek',
+        link: 'https://deepseek.com',
+        date: '2025-05-23'
       }
     ],
     agent: [] // Empty for now, will be populated later
@@ -90,13 +112,13 @@ const Leaderboard = () => {
 
   return (
     <section className="w-full mb-12">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <h2 className="text-2xl font-bold text-center mb-4">LiveSQLBench Leaderboard</h2>
         
         <div className="h-0.5 w-16 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
         
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="md:w-1/2 md:flex md:flex-col md:justify-center">
+        <div className="flex flex-col gap-8">
+          <div className="w-full">
             <p className="mb-6 text-base leading-relaxed text-gray-700">
               <span className="font-semibold">Success Rate.</span> Measures the success rate of LLMs in generating correct SQL queries.
             </p>
@@ -115,9 +137,9 @@ const Leaderboard = () => {
             </div>
           </div>
           
-          <div className="md:w-1/2">
+          <div className="w-full">
             <div className="text-xs text-gray-600 text-right mb-2">
-              Last Updated: 05/15/2024
+              Last Updated: 05/23/2025
             </div>
 
             {/* Category Tabs */}
@@ -151,8 +173,17 @@ const Leaderboard = () => {
                     <th className="h-12 px-4 text-left align-middle font-medium text-gray-600">
                       Model
                     </th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-gray-600">
+                      Organization
+                    </th>
                     <th className="h-12 px-4 text-right align-middle font-medium text-gray-600">
                       Success Rate (%) <ArrowDown className="inline h-4 w-4 text-gray-400" />
+                    </th>
+                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
+                      Date
+                    </th>
+                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
+                      Link
                     </th>
                   </tr>
                 </thead>
@@ -178,14 +209,30 @@ const Leaderboard = () => {
                             <span className="font-medium">{model.fullName}</span>
                           </div>
                         </td>
+                        <td className="p-4 align-middle">
+                          {model.organization}
+                        </td>
                         <td className="p-4 align-middle text-right font-medium">
                           {model.completionRate > 0 ? `${model.completionRate.toFixed(2)}%` : 'N/A'}
+                        </td>
+                        <td className="p-4 align-middle text-center">
+                          {model.date}
+                        </td>
+                        <td className="p-4 align-middle text-center">
+                          <a 
+                            href={model.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 hover:underline"
+                          >
+                            Visit
+                          </a>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={2} className="p-8 text-center text-gray-500">
+                      <td colSpan={5} className="p-8 text-center text-gray-500">
                         No results available for this category yet.
                       </td>
                     </tr>
