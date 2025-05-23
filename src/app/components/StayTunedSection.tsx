@@ -12,7 +12,7 @@ const StayTunedSection = () => {
         
         <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
           <div className="space-y-2">
-            <p>We are developing several new versions of LiveSQLBench:</p>
+            <p>We are developing several new versions of LiveSQLBench for the first release:</p>
             <ul className="list-none space-y-2 pl-4">
               <li className="flex items-start">
                 <span className="text-blue-600 font-semibold mr-2">•</span>
