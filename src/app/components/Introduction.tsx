@@ -36,7 +36,7 @@ const Introduction = () => {
                             },
                             {
                                 title: "Contextual Reasoning (HKB)",
-                                desc: "Every database scenario includes a JSON-format hierarchical knowledge base (HKB) in which each knowledge is related to others, which requires LLM's multi-hop reasoning ability. Document format will be added in the future."
+                                desc: "Every database scenario includes a hierarchical knowledge base (HKB) in which each knowledge is related to others, which requires LLM's multi-hop reasoning ability. Two formats of HKB are provided: (1) JSON format, and (2) Document format."
                             },
                             {
                                 title: "The First Full SQL Spectrum",

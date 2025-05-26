@@ -463,7 +463,7 @@ export default function DataViewer() {
             <p>
               Please explore{" "}
               <strong className="text-purple-600">LiveSQLBench-Base-Lite</strong>{" "}
-              examples with DBs, tasks, and HKB, our initial release featuring 270 tasks across 18 end-user level databases. Each task features unambiguous and straightforward user queries grounded in external knowledge, with medium to hard complexity SQL statements.
+              examples with DBs, tasks, and HKB-JSON, our initial release featuring 270 tasks across 18 end-user level databases. Each task features unambiguous and straightforward user queries grounded in external knowledge, with medium to hard complexity SQL statements.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-3">
               <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
