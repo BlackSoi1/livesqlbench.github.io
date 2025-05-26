@@ -27,13 +27,13 @@ const LatestNews = () => {
           
           {/* Date with adjustable vertical position */}
           <div className="relative px-2" style={{ top: "0px" }}>
-            <span className="text-gray-500 font-bold whitespace-nowrap">[02/11/2025]:</span>
+            <span className="text-gray-500 font-bold whitespace-nowrap">[05/30/2025]:</span>
           </div>
           
           {/* Text with adjustable vertical position */}
           <div className="relative" style={{ top: "0px" }}>
             <span className="text-gray-700">
-              LiveSQLBench has been released! It contains two versions: LiveSQLBench-Base and LiveSQLBench-Large. Download it and test your text-to-SQL LLMs or agents in a containmation-free way!
+              The first release of LiveSQLBench has been released! It contains our initial version: LiveSQLBench-Base-Lite. Download it and test your text-to-SQL LLMs or agents in a containmation-free way!
             </span>
           </div>
         </div>
