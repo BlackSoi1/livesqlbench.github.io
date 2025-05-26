@@ -17,7 +17,7 @@ const StayTunedSection = () => {
             <ul className="list-none space-y-2 pl-4">
               <li className="flex items-start">
                 <span className="text-blue-600 font-semibold mr-2">•</span>
-                <span><strong className="text-purple-600">LiveSQLBench-Base-Full</strong> with <strong className="text-blue-600">600 BI tasks</strong> and <strong className="text-blue-600">200 Management tasks</strong></span>
+                <span><strong className="text-purple-600">LiveSQLBench-Base-Full</strong> with <strong className="text-blue-600">600 BI tasks</strong>, <strong className="text-blue-600">200 Management tasks</strong> and <strong className="text-blue-600">HKB-Documents</strong></span>
               </li>
               <li className="flex items-start">
                 <span className="text-blue-600 font-semibold mr-2">•</span>
