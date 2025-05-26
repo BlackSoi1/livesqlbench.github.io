@@ -83,3 +83,18 @@ export async function readSchemaFile(dbName: string): Promise<any> {
     return null;
   }
 }
+
+export async function readKnowledgeMarkdownFile(dbName: string): Promise<string | null> {
+  try {
+    const response = await fetch(
+      `${getBasePath()}/data/${dbName}/${dbName}_kb.md`
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to load knowledge markdown for ${dbName}`);
+    }
+    return await response.text();
+  } catch (error) {
+    console.error(`Error loading knowledge markdown for ${dbName}:`, error);
+    return null;
+  }
+}

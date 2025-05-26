@@ -14,6 +14,7 @@ import {
   readKnowledgeFile,
   readSchemaFile,
   getLargeDatabases,
+  readKnowledgeMarkdownFile,
 } from "@/utils/fileUtils";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -151,12 +152,7 @@ export default function DataViewer() {
           readDataFile(selectedDb),
           readKnowledgeFile(selectedDb),
           readSchemaFile(selectedDb),
-          fetch(`/data/${selectedDb}/${selectedDb}_kb.md`).then(res => {
-            if (!res.ok) {
-              throw new Error('Failed to load markdown file');
-            }
-            return res.text();
-          }).catch(() => null),
+          readKnowledgeMarkdownFile(selectedDb),
         ]);
 
         setData(dataEntries);
@@ -190,12 +186,7 @@ export default function DataViewer() {
         readDataFile(dbName),
         readKnowledgeFile(dbName),
         readSchemaFile(dbName),
-        fetch(`/data/${dbName}/${dbName}_kb.md`).then(res => {
-          if (!res.ok) {
-            throw new Error('Failed to load markdown file');
-          }
-          return res.text();
-        }).catch(() => null),
+        readKnowledgeMarkdownFile(dbName),
       ]);
 
       setData(dataEntries);
