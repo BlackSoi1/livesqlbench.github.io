@@ -35,8 +35,8 @@ const Introduction = () => {
                                 desc: "Each task pairs unambiguous user queries with annotated, gold-standard SQL statements. The user queries are grounded in external knowledge, with medium to hard complexity SQL statements."
                             },
                             {
-                                title: "Contextual Reasoning",
-                                desc: "Every database scenario includes a hierarchical knowledge base (HKB) in which each knowledge is related to others, which requires LLM's multi-hop reasoning ability."
+                                title: "Contextual Reasoning (HKB)",
+                                desc: "Every database scenario includes a JSON-format hierarchical knowledge base (HKB) in which each knowledge is related to others, which requires LLM's multi-hop reasoning ability. Document format will be added in the future."
                             },
                             {
                                 title: "The First Full SQL Spectrum",

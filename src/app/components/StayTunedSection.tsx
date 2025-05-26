@@ -49,7 +49,7 @@ const StayTunedSection = () => {
           {showVoting && (
             <div>
               <p className="mb-4">
-                Help us prioritize new SQL dialects for LiveSQLBench by providing your preferences below.
+                Want new SQL dialects? Vote for new SQL dialects for LiveSQLBench by providing your preferences below.
               </p>
               <iframe
                 src="https://docs.google.com/forms/d/e/1FAIpQLSfEogmsA7LObI13KOoiojdnYfW28KEqvEVtC9hXaZJ8O9aCpQ/viewform?embedded=true"

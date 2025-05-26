@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import type { DataEntry, KnowledgeEntry } from "@/utils/fileUtils";
 import SqlViewer from "@/components/SqlViewer";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import type { SyntaxHighlighterProps } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Copy, Check } from "lucide-react";
 import SchemaViewer from "./SchemaViewer";
@@ -14,6 +15,88 @@ import {
   readSchemaFile,
   getLargeDatabases,
 } from "@/utils/fileUtils";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import type { Components } from 'react-markdown';
+import 'katex/dist/katex.min.css';
+
+// Add a new component for rendering knowledge entries
+const KnowledgeEntryRenderer = ({ entry }: { entry: KnowledgeEntry }) => {
+  const components: Components = {
+    p({children}) {
+      if (typeof children === 'string' && children.includes('•')) {
+        const parts = children.split(/(•[^•]+)/);
+        return (
+          <div className="space-y-0.5 text-xs">
+            {parts.map((part, i) => {
+              if (part.startsWith('•')) {
+                return (
+                  <div key={i} className="flex items-start">
+                    <span className="mr-2 text-gray-500">•</span>
+                    <span className="text-xs">{part.slice(1).trim()}</span>
+                  </div>
+                );
+              }
+              return part ? <p key={i} className="text-xs">{part}</p> : null;
+            })}
+          </div>
+        );
+      }
+      return <p className="text-xs">{children}</p>;
+    }
+  };
+
+  const formatChildrenKnowledge = (children: number | number[]) => {
+    if (children === -1) return "None";
+    if (Array.isArray(children)) return children.join(", ");
+    return children.toString();
+  };
+
+  return (
+    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="relative mb-2">
+        <h4 className="font-medium text-gray-900 pr-20">
+          {entry.knowledge}
+        </h4>
+        <span className="absolute top-0 right-0 text-xs bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-full font-medium">
+          ID: {entry.id}
+        </span>
+      </div>
+      <p className="text-sm text-gray-600 mb-2">
+        {entry.description}
+      </p>
+      <div className="prose prose-xs max-w-none bg-gray-50 p-3 rounded-lg border border-gray-100
+        [&>*]:text-xs [&>*]:leading-relaxed
+        prose-p:text-gray-700 prose-p:text-xs prose-p:leading-relaxed
+        prose-strong:text-gray-900 prose-strong:font-semibold prose-strong:text-xs
+        [&_.katex]:text-gray-900 [&_.katex]:text-xs
+        [&_.katex-display]:my-2
+        [&_.katex-display_.katex]:text-xs
+        prose-ul:text-xs prose-ul:my-1 prose-ul:pl-4
+        prose-li:text-xs prose-li:my-0.5
+        prose-blockquote:text-xs prose-blockquote:border-l-2
+        prose-code:text-xs prose-code:bg-gray-200 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, remarkMath]}
+          rehypePlugins={[rehypeKatex]}
+          components={components}
+        >
+          {entry.definition}
+        </ReactMarkdown>
+      </div>
+      <div className="flex flex-wrap gap-2 text-xs mt-3">
+        <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+          Type: {entry.type}
+        </span>
+        <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+          Children: {formatChildrenKnowledge(entry.children_knowledge)}
+        </span>
+      </div>
+    </div>
+  );
+};
 
 export default function DataViewer() {
   const [selectedDb, setSelectedDb] = useState<string>("");
@@ -35,6 +118,8 @@ export default function DataViewer() {
   const [schemaDot, setSchemaDot] = useState<string | null>(null);
   const [showSchema, setShowSchema] = useState(false);
   const [schema, setSchema] = useState<any>(null);
+  const [kbMarkdown, setKbMarkdown] = useState<string | null>(null);
+  const [showKbDoc, setShowKbDoc] = useState(false);
 
   useEffect(() => {
     const loadDatabases = async () => {
@@ -62,10 +147,16 @@ export default function DataViewer() {
       if (!selectedDb) return;
 
       try {
-        const [dataEntries, knowledgeEntries, schemaData] = await Promise.all([
+        const [dataEntries, knowledgeEntries, schemaData, kbContent] = await Promise.all([
           readDataFile(selectedDb),
           readKnowledgeFile(selectedDb),
           readSchemaFile(selectedDb),
+          fetch(`/data/${selectedDb}/${selectedDb}_kb.md`).then(res => {
+            if (!res.ok) {
+              throw new Error('Failed to load markdown file');
+            }
+            return res.text();
+          }).catch(() => null),
         ]);
 
         setData(dataEntries);
@@ -73,6 +164,7 @@ export default function DataViewer() {
         if (schemaData?.dotContent) {
           setSchemaDot(schemaData.dotContent);
         }
+        setKbMarkdown(kbContent);
       } catch (error) {
         console.error("Failed to load data:", error);
       }
@@ -89,13 +181,21 @@ export default function DataViewer() {
     setShowDetails(false);
     setSchemaDot(null);
     setShowSchema(false);
+    setKbMarkdown(null);
+    setShowKbDoc(false);
 
     try {
       // Load data directly from static JSON files
-      const [dataEntries, knowledgeEntries, schemaData] = await Promise.all([
+      const [dataEntries, knowledgeEntries, schemaData, kbContent] = await Promise.all([
         readDataFile(dbName),
         readKnowledgeFile(dbName),
         readSchemaFile(dbName),
+        fetch(`/data/${dbName}/${dbName}_kb.md`).then(res => {
+          if (!res.ok) {
+            throw new Error('Failed to load markdown file');
+          }
+          return res.text();
+        }).catch(() => null),
       ]);
 
       setData(dataEntries);
@@ -103,6 +203,7 @@ export default function DataViewer() {
       if (schemaData?.dotContent) {
         setSchemaDot(schemaData.dotContent);
       }
+      setKbMarkdown(kbContent);
     } catch (err) {
       setError("Failed to load data");
       console.error(err);
@@ -223,9 +324,10 @@ export default function DataViewer() {
   };
 
   // Format children knowledge IDs for display
-  const formatChildrenKnowledge = (childrenKnowledge: number) => {
-    if (childrenKnowledge === -1) return "None";
-    return childrenKnowledge.toString();
+  const formatChildrenKnowledge = (children: number | number[]) => {
+    if (children === -1) return "None";
+    if (Array.isArray(children)) return children.join(", ");
+    return children.toString();
   };
 
   // Render a collapsible section
@@ -294,6 +396,62 @@ export default function DataViewer() {
     );
   };
 
+  const renderMarkdown = (content: string) => {
+    const components: Components = {
+      code({node, className, children, ...props}) {
+        const match = /language-(\w+)/.exec(className || '');
+        if (!match) {
+          return (
+            <code className={className} {...props}>
+              {children}
+            </code>
+          );
+        }
+
+        const language = match[1];
+        const codeProps: SyntaxHighlighterProps = {
+          style: vscDarkPlus,
+          language,
+          PreTag: "div",
+          children: String(children).replace(/\n$/, '')
+        };
+
+        return <SyntaxHighlighter {...codeProps} />;
+      }
+    };
+
+    return (
+      <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none 
+        prose-headings:text-gray-900 prose-headings:font-semibold
+        prose-p:text-gray-700 prose-p:leading-relaxed
+        prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+        prose-strong:text-gray-900 prose-strong:font-semibold
+        prose-code:text-gray-900 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
+        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+        prose-ul:list-disc prose-ul:pl-6 prose-ul:my-4
+        prose-ol:list-decimal prose-ol:pl-6 prose-ol:my-4
+        prose-li:my-1 prose-li:text-gray-700
+        prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600
+        prose-table:w-full prose-table:my-4 prose-table:border-collapse
+        prose-th:bg-gray-100 prose-th:font-semibold prose-th:text-gray-900 prose-th:p-3 prose-th:border prose-th:border-gray-300
+        prose-td:p-3 prose-td:border prose-td:border-gray-300 prose-td:text-gray-700
+        prose-hr:my-8 prose-hr:border-gray-200
+        [&>*:first-child]:mt-0
+        [&>*:last-child]:mb-0
+        [&_.katex]:text-gray-900
+        [&_.katex-display]:my-4
+        [&_.katex-display_.katex]:text-lg">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, remarkMath]}
+          rehypePlugins={[rehypeKatex]}
+          components={components}
+        >
+          {content}
+        </ReactMarkdown>
+      </div>
+    );
+  };
+
   return (
     <section className="bg-gradient-to-b from-gray-50 to-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -345,6 +503,9 @@ export default function DataViewer() {
                   archeology_large
                 </code>{" "}
                 are available for preview with very complex ER diagrams.
+              </p>
+              <p className="text-sm text-indigo-700">
+                <strong>Knowledge Base (Document) Preview:</strong> Knowledge Base (Document) is the document-format of Knowledge Base (JSON), which is more realistic and requires LLM's long-context reasoning ability.
               </p>
             </div>
           </div>
@@ -473,6 +634,194 @@ export default function DataViewer() {
               {showSchema && schemaDot && (
                 <div className="max-w-4xl mx-auto mb-8">
                   <SchemaViewer dbName={selectedDb} dotContent={schemaDot} />
+                </div>
+              )}
+
+              {/* Add Knowledge Base Document Toggle Button */}
+              {kbMarkdown && (
+                <div className="max-w-4xl mx-auto mb-6">
+                  <button
+                    onClick={() => setShowKbDoc(!showKbDoc)}
+                    className="w-full flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center">
+                      <svg
+                        className="w-5 h-5 mr-2 text-purple-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        ></path>
+                      </svg>
+                      <span className="font-medium text-gray-900">
+                        Knowledge Base (Document)
+                      </span>
+                    </div>
+                    <svg
+                      className={`w-5 h-5 transform transition-transform ${
+                        showKbDoc ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              )}
+
+              {/* Knowledge Base Document Viewer */}
+              {showKbDoc && kbMarkdown && (
+                <div className="max-w-4xl mx-auto mb-8">
+                  <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                    {/* macOS-style window header */}
+                    <div className="bg-gradient-to-b from-gray-100 to-gray-50 px-4 py-2 border-b border-gray-200">
+                      <div className="flex items-center space-x-2 mb-2">
+                        {/* Traffic light buttons */}
+                        <div className="flex space-x-1.5">
+                          <button className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors"></button>
+                          <button className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors"></button>
+                          <button className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 transition-colors"></button>
+                        </div>
+                        {/* Window title */}
+                        <div className="flex-1 text-center">
+                          <div className="bg-white rounded-md px-4 py-1 inline-flex items-center shadow-sm border border-gray-200">
+                            <svg
+                              className="w-4 h-4 mr-2 text-gray-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                              ></path>
+                            </svg>
+                            <span className="text-sm font-medium text-gray-700">
+                              {selectedDb.charAt(0).toUpperCase() + selectedDb.slice(1)} Knowledge Base.pdf
+                            </span>
+                          </div>
+                        </div>
+                        {/* Window controls */}
+                        <div className="flex items-center space-x-2">
+                          <button className="p-1 rounded hover:bg-gray-200 transition-colors">
+                            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      {/* Toolbar */}
+                      <div className="flex items-center space-x-4 px-2 py-1 bg-white rounded-md border border-gray-200">
+                        <div className="flex items-center space-x-2 text-xs text-gray-600">
+                          <span className="px-2 py-0.5 bg-gray-100 rounded">File</span>
+                          <span className="px-2 py-0.5 bg-gray-100 rounded">Edit</span>
+                          <span className="px-2 py-0.5 bg-gray-100 rounded">View</span>
+                          <span className="px-2 py-0.5 bg-gray-100 rounded">Window</span>
+                          <span className="px-2 py-0.5 bg-gray-100 rounded">Help</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Window content */}
+                    <div className="relative bg-[#fafafa] min-h-[600px]">
+                      {/* Paper-like background with subtle texture */}
+                      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBvcGFjaXR5PSIwLjAyIj48cGF0aCBkPSJNMTAgMTBsMTAgMTBIMHYtMTB6IiBmaWxsPSIjMDAwIi8+PC9nPjwvc3ZnPg==')]"></div>
+                      
+                      {/* Content area with paper-like margins and shadow */}
+                      <div className="relative mx-8 my-6 bg-white rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.1)]">
+                        {/* Document content with proper margins */}
+                        <div className="px-12 py-8">
+                          <div className={`
+                            prose prose-sm md:prose-base lg:prose-lg max-w-none
+                            prose-headings:text-gray-900 prose-headings:font-semibold
+                            prose-p:text-gray-700 prose-p:leading-relaxed
+                            prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                            prose-strong:text-gray-900 prose-strong:font-semibold
+                            prose-code:text-gray-900 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
+                            prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+                            prose-ul:list-disc prose-ul:pl-6 prose-ul:my-4
+                            prose-ol:list-decimal prose-ol:pl-6 prose-ol:my-4
+                            prose-li:my-1 prose-li:text-gray-700
+                            prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600
+                            prose-table:w-full prose-table:my-4 prose-table:border-collapse
+                            prose-th:bg-gray-100 prose-th:font-semibold prose-th:text-gray-900 prose-th:p-3 prose-th:border prose-th:border-gray-300
+                            prose-td:p-3 prose-td:border prose-td:border-gray-300 prose-td:text-gray-700
+                            prose-hr:my-8 prose-hr:border-gray-200
+                            [&>*:first-child]:mt-0
+                            [&>*:last-child]:mb-0
+                            [&_.katex]:text-gray-900
+                            [&_.katex-display]:my-4
+                            [&_.katex-display_.katex]:text-lg
+                          `}>
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm, remarkMath]}
+                              rehypePlugins={[rehypeKatex]}
+                              components={{
+                                code({node, className, children, ...props}) {
+                                  const match = /language-(\w+)/.exec(className || '');
+                                  if (!match) {
+                                    return (
+                                      <code className={className} {...props}>
+                                        {children}
+                                      </code>
+                                    );
+                                  }
+
+                                  const language = match[1];
+                                  const codeProps: SyntaxHighlighterProps = {
+                                    style: vscDarkPlus,
+                                    language,
+                                    PreTag: "div",
+                                    children: String(children).replace(/\n$/, '')
+                                  };
+
+                                  return <SyntaxHighlighter {...codeProps} />;
+                                }
+                              }}
+                            >
+                              {kbMarkdown}
+                            </ReactMarkdown>
+                          </div>
+                        </div>
+
+                        {/* Page footer with subtle line and page number */}
+                        <div className="border-t border-gray-100 px-8 py-4 bg-gray-50">
+                          <div className="flex justify-between items-center text-sm text-gray-500">
+                            <span>LiveSQLBench Knowledge Base</span>
+                            <span>Page 1</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Window status bar */}
+                    <div className="bg-gray-50 border-t border-gray-200 px-4 py-1.5 flex items-center justify-between text-xs text-gray-500">
+                      <div className="flex items-center space-x-4">
+                        <span>Ready</span>
+                        <span>•</span>
+                        <span>UTF-8</span>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <span>100%</span>
+                        <span>•</span>
+                        <span>PDF</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -740,42 +1089,13 @@ export default function DataViewer() {
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 px-6 py-4">
                     <h3 className="text-xl font-semibold text-white">
-                      Knowledge Base
+                      Knowledge Base (JSON)
                     </h3>
                   </div>
                   <div className="p-6">
                     <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
                       {knowledge.map((entry) => (
-                        <div
-                          key={entry.id}
-                          className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
-                        >
-                          <div className="relative mb-2">
-                            <h4 className="font-medium text-gray-900 pr-20">
-                              {entry.knowledge}
-                            </h4>
-                            <span className="absolute top-0 right-0 text-xs bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-full font-medium">
-                              ID: {entry.id}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600 mb-2">
-                            {entry.description}
-                          </p>
-                          <p className="text-sm font-mono bg-gray-50 p-2 rounded border border-gray-100 mb-2">
-                            {entry.definition}
-                          </p>
-                          <div className="flex flex-wrap gap-2 text-xs">
-                            <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
-                              Type: {entry.type}
-                            </span>
-                            <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
-                              Children:{" "}
-                              {formatChildrenKnowledge(
-                                entry.children_knowledge
-                              )}
-                            </span>
-                          </div>
-                        </div>
+                        <KnowledgeEntryRenderer key={entry.id} entry={entry} />
                       ))}
                     </div>
                   </div>
@@ -800,6 +1120,61 @@ export default function DataViewer() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #94a3b8;
+        }
+        
+        /* Add styles for markdown content */
+        .prose pre {
+          margin: 1.5em 0;
+          padding: 1em;
+          border-radius: 0.5rem;
+          overflow-x: auto;
+        }
+        
+        .prose code {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+          margin-top: 2em;
+          margin-bottom: 1em;
+          font-weight: 600;
+        }
+        
+        .prose p {
+          margin: 1em 0;
+          line-height: 1.75;
+        }
+        
+        .prose ul, .prose ol {
+          margin: 1em 0;
+          padding-left: 1.5em;
+        }
+        
+        .prose li {
+          margin: 0.5em 0;
+        }
+        
+        .prose blockquote {
+          margin: 1.5em 0;
+          padding-left: 1em;
+          border-left: 4px solid #e5e7eb;
+          color: #6b7280;
+        }
+        
+        .prose table {
+          width: 100%;
+          margin: 1.5em 0;
+          border-collapse: collapse;
+        }
+        
+        .prose th, .prose td {
+          padding: 0.75em;
+          border: 1px solid #e5e7eb;
+        }
+        
+        .prose th {
+          background-color: #f9fafb;
+          font-weight: 600;
         }
       `}</style>
     </section>
