@@ -299,13 +299,13 @@ export default function DataViewer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-3">
-            LiveSQLBench Data
+            LiveSQLBench-Base-Lite Data
           </h2>
           <div className="text-gray-600 max-w-3xl mx-auto space-y-2">
             <p>
               Please explore{" "}
               <strong className="text-purple-600">LiveSQLBench-Base-Lite</strong>{" "}
-              sampled DB, tasks, and HKB, our initial release featuring 270 tasks across 18 end-user level databases. Each task features unambiguous user queries grounded in external knowledge, with medium to hard complexity SQL statements.
+              examples with DBs, tasks, and HKB, our initial release featuring 270 tasks across 18 end-user level databases. Each task features unambiguous and straightforward user queries grounded in external knowledge, with medium to hard complexity SQL statements.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-3">
               <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
@@ -624,13 +624,13 @@ export default function DataViewer() {
                                           key={id}
                                           className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
                                         >
-                                          <div className="flex justify-between items-start mb-2">
-                                            <p className="font-medium text-gray-900">
+                                          <div className="relative mb-2">
+                                            <h4 className="font-medium text-gray-900 pr-20">
                                               {knowledgeEntry
                                                 ? knowledgeEntry.knowledge
                                                 : `Knowledge ID ${id}`}
-                                            </p>
-                                            <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full font-medium">
+                                            </h4>
+                                            <span className="absolute top-0 right-0 text-xs bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-full font-medium">
                                               ID: {id}
                                             </span>
                                           </div>
@@ -750,11 +750,11 @@ export default function DataViewer() {
                           key={entry.id}
                           className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
                         >
-                          <div className="flex justify-between items-start mb-2">
-                            <h4 className="font-medium text-gray-900">
+                          <div className="relative mb-2">
+                            <h4 className="font-medium text-gray-900 pr-20">
                               {entry.knowledge}
                             </h4>
-                            <span className="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-full font-medium">
+                            <span className="absolute top-0 right-0 text-xs bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-full font-medium">
                               ID: {entry.id}
                             </span>
                           </div>

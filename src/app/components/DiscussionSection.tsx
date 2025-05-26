@@ -4,7 +4,7 @@ const DiscussionSection = () => {
   const discussions = [
     {
       title: "Current Model Performance",
-      content: "LiveSQLBench-Base-Lite evaluates LLMs on PostgreSQL, the most widely used and feature-rich open-source database system. Our benchmark provides Docker-based evaluation environments for easy deployment and reproducibility. We conduct separate evaluations across three categories: (1) Model Base - direct SQL generation without external tools, (2) Agentless - models with built-in tool use capabilities, and (3) Agent - models with external tool orchestration. Initial results on Model Base reveal significant challenges, with the best-performing model (o3-mini) achieving only 42.59% success rate. The performance gap between models is notable, with top models (o3-mini, Qwen 3 235B, Gemini 2.0 Flash) showing similar capabilities around 35-43%, while others struggle to generate correct SQL queries."
+      content: "LiveSQLBench-Base-Lite evaluates LLMs on PostgreSQL, the most widely used and feature-rich open-source database system. Our benchmark provides Docker-based evaluation environments for easy deployment and reproducibility. We conduct separate evaluations across three categories: (1) Model Base - direct SQL generation without external tools, and (2) Agent - models with external tool orchestration. Initial results on Model Base reveal significant challenges, with the best-performing model (o3-mini) achieving only 42.59% success rate. The performance gap between models is notable, with top models (o3-mini, Qwen 3 235B, Gemini 2.0 Flash) showing similar capabilities around 35-43%, while others struggle to generate correct SQL queries."
     }
   ];
 

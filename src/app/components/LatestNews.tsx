@@ -7,7 +7,7 @@ const LatestNews = () => {
     <div className="mb-8">
       {/* Latest News */}
       <div className="flex items-center gap-4 mb-4">
-        <h2 className="text-xl font-bold flex-shrink-0">Latest News</h2>
+        <h2 className="text-xl font-bold flex-shrink-0">News</h2>
         <div className="h-0.5 flex-grow bg-gray-200"></div>
       </div>
       <div className="font-medium">

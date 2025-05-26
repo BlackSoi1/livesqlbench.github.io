@@ -73,6 +73,12 @@ const Citation = () => {
             <Mail className="mr-2 h-6 w-6 sm:h-4 sm:w-4" />
             <span>
               For any inquiries or feedback, please contact us at{' '}
+              <a href="mailto:shawnxxh@gmail.com" className="text-blue-600 hover:underline">
+                shawnxxh@gmail.com
+              </a>, 
+              <a href="mailto:jl0725@connect.hku.hk" className="text-blue-600 hover:underline">
+              jl0725@connect.hku.hk
+              </a>,
               <a href="mailto:bird.bench25@gmail.com" className="text-blue-600 hover:underline">
                 bird.bench25@gmail.com
               </a>

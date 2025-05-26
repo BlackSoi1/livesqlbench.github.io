@@ -12,6 +12,7 @@ interface ModelResult {
   link: string;
   date: string;
   hasReasoning: boolean;
+  cost?: string;
 }
 
 const Leaderboard = () => {
@@ -28,7 +29,8 @@ const Leaderboard = () => {
         organization: 'OpenAI',
         link: 'https://openai.com',
         date: '2025-05-23',
-        hasReasoning: true
+        hasReasoning: true,
+        cost: '/'
       },
       { 
         name: 'qwen-qwen3-235b-a22b',
@@ -39,7 +41,8 @@ const Leaderboard = () => {
         organization: 'Alibaba',
         link: 'https://qwenlm.github.io',
         date: '2025-05-23',
-        hasReasoning: false
+        hasReasoning: false,
+        cost: '/'
       },
       { 
         name: 'gemini-2-0-flash-001',
@@ -50,7 +53,8 @@ const Leaderboard = () => {
         organization: 'Google',
         link: 'https://deepmind.google/technologies/gemini/',
         date: '2025-05-23',
-        hasReasoning: false
+        hasReasoning: false,
+        cost: '/'
       },
       { 
         name: 'gpt-4o-2024-11-20',
@@ -61,7 +65,8 @@ const Leaderboard = () => {
         organization: 'OpenAI',
         link: 'https://openai.com',
         date: '2025-05-23',
-        hasReasoning: false
+        hasReasoning: false,
+        cost: '/'
       },
       { 
         name: 'claude-3-7-sonnet-20250219',
@@ -72,7 +77,8 @@ const Leaderboard = () => {
         organization: 'Anthropic',
         link: 'https://www.anthropic.com',
         date: '2025-05-23',
-        hasReasoning: false
+        hasReasoning: false,
+        cost: '/'
       },
       { 
         name: 'deepsseek-deepseek-r1',
@@ -83,7 +89,8 @@ const Leaderboard = () => {
         organization: 'DeepSeek',
         link: 'https://deepseek.com',
         date: '2025-05-23',
-        hasReasoning: true
+        hasReasoning: true,
+        cost: '/'
       },
       { 
         name: 'deepsseek-deepseek-chat',
@@ -94,7 +101,8 @@ const Leaderboard = () => {
         organization: 'DeepSeek',
         link: 'https://deepseek.com',
         date: '2025-05-23',
-        hasReasoning: false
+        hasReasoning: false,
+        cost: '/'
       }
     ],
     agent: [] // Empty for now, will be populated later
@@ -129,7 +137,7 @@ const Leaderboard = () => {
         <div className="flex flex-col gap-8">
           <div className="w-full">
             <p className="mb-6 text-base leading-relaxed text-gray-700">
-              <span className="font-semibold">Success Rate.</span> Measures the success rate of LLMs in generating correct SQL queries.
+              <span className="font-semibold">Success Rate.</span> Defined by the ratio of the number of tasks passing the test cases to the total number of tasks.
             </p>
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
               <h3 className="font-semibold text-blue-900 mb-2">Evaluation Methodology</h3>
@@ -180,7 +188,7 @@ const Leaderboard = () => {
                 <thead>
                   <tr className="bg-gray-50 border-b">
                     <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
-                      Rank
+                      Rank / Date
                     </th>
                     <th className="h-12 px-4 text-left align-middle font-medium text-gray-600">
                       Model
@@ -192,7 +200,7 @@ const Leaderboard = () => {
                       Success Rate (%) <ArrowDown className="inline h-4 w-4 text-gray-400" />
                     </th>
                     <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
-                      Date
+                      Cost
                     </th>
                     <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
                       Link
@@ -210,14 +218,19 @@ const Leaderboard = () => {
                       >
                         <td className="p-4 align-middle text-center">
                           {model.completionRate > 0 ? (
-                            <div className="flex items-center justify-center gap-1">
-                              {index === 0 && <span className="text-yellow-500">🥇</span>}
-                              {index === 1 && <span className="text-gray-400">🥈</span>}
-                              {index === 2 && <span className="text-amber-600">🥉</span>}
-                              <span className={`font-medium ${
-                                index < 3 ? 'text-gray-700' : 'text-gray-500'
-                              }`}>
-                                {index + 1}
+                            <div className="flex flex-col items-center justify-center gap-1">
+                              <div className="flex items-center gap-1">
+                                {index === 0 && <span className="text-yellow-500">🥇</span>}
+                                {index === 1 && <span className="text-gray-400">🥈</span>}
+                                {index === 2 && <span className="text-amber-600">🥉</span>}
+                                <span className={`font-medium ${
+                                  index < 3 ? 'text-gray-700' : 'text-gray-500'
+                                }`}>
+                                  {index + 1}
+                                </span>
+                              </div>
+                              <span className="mt-1 px-2 py-0.5 rounded bg-blue-100 text-xs text-blue-700 font-medium">
+                                {model.date}
                               </span>
                             </div>
                           ) : (
@@ -240,17 +253,18 @@ const Leaderboard = () => {
                         <td className="p-4 align-middle text-center font-medium">
                           {model.completionRate > 0 ? `${model.completionRate.toFixed(2)}%` : 'N/A'}
                         </td>
-                        <td className="p-4 align-middle text-center">
-                          {model.date}
+                        <td className="p-4 align-middle text-center font-medium">
+                          {model.cost || '-'}
                         </td>
                         <td className="p-4 align-middle text-center">
                           <a 
                             href={model.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 hover:underline"
+                            className="text-blue-600 hover:text-blue-800 hover:underline text-lg"
+                            title="Visit Model Page"
                           >
-                            Visit
+                            🔗
                           </a>
                         </td>
                       </tr>
