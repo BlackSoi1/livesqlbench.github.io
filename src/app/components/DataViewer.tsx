@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import type { DataEntry, KnowledgeEntry } from "@/utils/fileUtils";
 import SqlViewer from "@/components/SqlViewer";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -22,6 +22,20 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { Components } from 'react-markdown';
 import 'katex/dist/katex.min.css';
+import { Virtuoso } from 'react-virtuoso';
+
+function KnowledgeList({ knowledge }: { knowledge: KnowledgeEntry[] }) {
+  return (
+    <Virtuoso
+      style={{ height: 600 }}           // same visual size as before
+      totalCount={knowledge.length}
+      itemContent={index => (
+        <KnowledgeEntryRenderer entry={knowledge[index]} />
+      )}
+    />
+  );
+}
+
 
 // Add a new component for rendering knowledge entries
 const KnowledgeEntryRenderer = ({ entry }: { entry: KnowledgeEntry }) => {
@@ -1112,9 +1126,7 @@ export default function DataViewer() {
                   </div>
                   <div className="p-6">
                     <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                      {knowledge.map((entry) => (
-                        <KnowledgeEntryRenderer key={entry.id} entry={entry} />
-                      ))}
+                      <KnowledgeList knowledge={knowledge} />
                     </div>
                   </div>
                 </div>

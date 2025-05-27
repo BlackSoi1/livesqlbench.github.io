@@ -251,7 +251,7 @@ const Leaderboard = () => {
                           <span className="italic text-gray-500">{model.organization}</span>
                         </td>
                         <td className="p-4 align-middle text-center font-medium">
-                          {model.completionRate > 0 ? `${model.completionRate.toFixed(2)}%` : 'N/A'}
+                          {model.completionRate > 0 ? `${model.completionRate.toFixed(2)}` : 'N/A'}
                         </td>
                         <td className="p-4 align-middle text-center font-medium">
                           {model.cost && model.cost !== '/' ? (
