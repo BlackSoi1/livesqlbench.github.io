@@ -30,7 +30,7 @@ const Leaderboard = () => {
         link: 'https://openai.com',
         date: '2025-05-23',
         hasReasoning: true,
-        cost: '/'
+        cost: '0.0237'
       },
       { 
         name: 'qwen-qwen3-235b-a22b',
@@ -42,7 +42,7 @@ const Leaderboard = () => {
         link: 'https://qwenlm.github.io',
         date: '2025-05-23',
         hasReasoning: false,
-        cost: '/'
+        cost: '0.0044'
       },
       { 
         name: 'gemini-2-0-flash-001',
@@ -54,7 +54,7 @@ const Leaderboard = () => {
         link: 'https://deepmind.google/technologies/gemini/',
         date: '2025-05-23',
         hasReasoning: false,
-        cost: '/'
+        cost: '0.0019'
       },
       { 
         name: 'gpt-4o-2024-11-20',
@@ -66,7 +66,7 @@ const Leaderboard = () => {
         link: 'https://openai.com',
         date: '2025-05-23',
         hasReasoning: false,
-        cost: '/'
+        cost: '0.0458'
       },
       { 
         name: 'claude-3-7-sonnet-20250219',
@@ -78,7 +78,7 @@ const Leaderboard = () => {
         link: 'https://www.anthropic.com',
         date: '2025-05-23',
         hasReasoning: false,
-        cost: '/'
+        cost: '0.0646'
       },
       { 
         name: 'deepsseek-deepseek-r1',
@@ -200,7 +200,7 @@ const Leaderboard = () => {
                       Success Rate (%) <ArrowDown className="inline h-4 w-4 text-gray-400" />
                     </th>
                     <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
-                      Cost
+                      Avg. Cost / Task
                     </th>
                     <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
                       Link
@@ -254,7 +254,16 @@ const Leaderboard = () => {
                           {model.completionRate > 0 ? `${model.completionRate.toFixed(2)}%` : 'N/A'}
                         </td>
                         <td className="p-4 align-middle text-center font-medium">
-                          {model.cost || '-'}
+                          {model.cost && model.cost !== '/' ? (
+                            <div className="inline-flex items-center px-1.5 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-green-50 to-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm">
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                              {model.cost}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
                         </td>
                         <td className="p-4 align-middle text-center">
                           <a 
