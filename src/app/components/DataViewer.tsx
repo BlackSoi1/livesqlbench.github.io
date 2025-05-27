@@ -484,6 +484,28 @@ export default function DataViewer() {
             </div>
             <div className="mt-4 p-3 bg-indigo-50 rounded-lg border border-indigo-100">
               <p className="text-sm text-blue-700 text-center">
+              <strong>Preview: </strong> <strong>Large Version (Industrial Level) DBs</strong>  and unstructured <strong>Knowledge Base (Document)</strong> will be supported in the future <strong className="text-purple-600">LiveSQLBench-Full</strong> version.
+              </p>
+              {/* <p className="text-sm text-black-700">
+                <strong>Large Version (Industrial Level) Preview:</strong> 
+                We are currently
+                developing large versions of each db, featuring 1340+ columns. 
+                Demo versions of{" "}
+                <code className="px-1 py-0.5 bg-indigo-100 rounded">
+                  alien_large
+                </code>{" "}
+                and{" "}
+                <code className="px-1 py-0.5 bg-indigo-100 rounded">
+                  archeology_large
+                </code>{" "}
+                are available for preview with very complex ER diagrams.
+              </p>
+              <p className="text-sm text-black-700">
+                <strong>Knowledge Base (Document) Preview:</strong> Knowledge Base (Document) is the document-format of Knowledge Base (JSON), which is more realistic and requires LLM's long-context reasoning ability.
+              </p> */}
+            </div>
+            {/* <div className="mt-4 p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+              <p className="text-sm text-blue-700 text-center">
               Two features will be supported in the future LiveSQLBench-Full version.
               </p>
               <p className="text-sm text-black-700">
@@ -503,7 +525,7 @@ export default function DataViewer() {
               <p className="text-sm text-black-700">
                 <strong>Knowledge Base (Document) Preview:</strong> Knowledge Base (Document) is the document-format of Knowledge Base (JSON), which is more realistic and requires LLM's long-context reasoning ability.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
