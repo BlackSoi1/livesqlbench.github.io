@@ -1,151 +1,261 @@
-### **Archaeological Scanning & Digital Preservation Knowledge Bank**
+## Knowledge Base Wiki – Digital Archaeological Scanning and Preservation
 
-*A public-facing, self-contained reference compiled from our internal business-intelligence knowledge base (latest revision May 2025).*
-
----
-
-## 1. Scan-Quality & Coverage Metrics
-
-| Concept                                                  | Description                                                                                                                       | Formula / Definition                                                                                                                                                       |
-| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Scan Resolution Index (SRI)**                          | Compound index measuring overall resolution quality; *lower* values mean better resolution and balanced parameters.               | $\displaystyle \text{SRI}= \frac{\log_{10}\!\bigl(\text{Scan Resolution (mm)}\times10^{3}\bigr)}{\log_{10}(\text{Point Density})}\times5$                                  |
-| **Scan Coverage Effectiveness (SCE)**                    | Gauges how well a scan covers its target, blending coverage and overlap redundancy. Higher is better.                             | $\displaystyle \text{SCE}= \text{Coverage (\%)} \times \Bigl[1+\frac{\text{Overlap (\%)}}{100}\!\left(1-\frac{\text{Coverage (\%)}}{100}\right)\Bigr]$                     |
-| **Scan Quality Score (SQS)**                             | Comprehensive quality metric coupling resolution, coverage, and noise (resolution weighted most heavily).                         | $\displaystyle \text{SQS}= \left(\frac{10}{\text{SRI}}\right)^{1.5}\!\times\!\left(\frac{\text{SCE}}{100}\right)\!\times\!\left(1-\frac{\text{Noise (dB)}}{30}\right)^{2}$ |
-| **Scan Time Efficiency (STE)**                           | How efficiently scanning time was used relative to quality and completeness.                                                      | $\displaystyle \text{STE}= \frac{\text{SQS}\,\sqrt{\text{Coverage (\%)}}}{\text{Duration (min)} \times \sqrt{\text{Number of Scans}}}$                                     |
-| **Environmental Suitability Index (ESI)**                | Rates how well ambient conditions suited scanning. Higher = more ideal.                                                           | $\displaystyle \text{ESI} = 100 - 2.5 \cdot \|\text{Temp} - 20\| - \|\frac{\text{Humidity} - 50}{2}\|^{1.5} - \frac{600}{\text{Illumination} + 100}$ |
-| **Environmental Impact Factor (EIF)**                    | Quantifies how much environment affected scan quality. Values near 100 ⇒ minimal impact.                                          | $\displaystyle \text{EIF}= \frac{\text{SQS}}{\text{ESI}+10}\times100$                                                                                                      |
-| **Optimal Scanning Conditions**                          | Defined as **ESI > 85**—moderate temperature, \~50 % humidity, ample light.                                                       |                                                                                                                                                                            |
-| **Environmental Condition Classification System (ECCS)** | • *Optimal* (ESI > 85)  • *Good* (70–85)  • *Acceptable* (50–70)  • *Challenging* (< 50). Guides scheduling and equipment choice. |                                                                                                                                                                            |
-| **Environmental Challenge Scan**                         | A scan where **EIF > 120**, proving successful data capture despite difficult conditions.                                         |                                                                                                                                                                            |
+This document presents the complete set of internal concepts, formulas, and classification systems that guide our digital-archaeology practice.  It is written for a public audience and is self-contained: no prior knowledge of our database structure is required.  All mathematical expressions use conventional notation, and every concept appears exactly as it is defined in the corporate knowledge bank.
 
 ---
 
-## 2. Point-Cloud & Spatial Metrics
+### 1.  Foundations of Scan Quality
 
-| Concept                              | Description                                                                         | Formula / Definition                                                                                                                                                       |
-| ------------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Point Cloud Density Ratio (PCDR)** | Assesses efficiency of point distribution over area. Higher = more efficient.       | $\displaystyle \text{PCDR}= \frac{\text{Total Points}}{\text{Point-Cloud Density Code}\times\text{Area (m²)}}$                                                             |
-| **Spatial Density Index (SDI)**      | Determines whether spatial sampling is sufficient for site size.                    | $\displaystyle \text{SDI}= \frac{\text{Total Points}}{\text{Area (m²)}\times10^{4}}\times\!\Bigl(\frac{\text{Point Density}}{\text{Point-Cloud Density Code}}\Bigr)^{0.5}$ |
-| **Spatially Complex Site**           | A site with **Area > 100 m²** *and* **SDI > 50**—requires multi-station strategies. |                                                                                                                                                                            |
+The **Scan Resolution Index (SRI)** measures the intrinsic sharpness of a scan by balancing physical resolution against point density.  It is computed as
 
----
+$$
+\text{SRI}= \frac{\log_{10}\!\bigl(\text{Scan Resolution (mm)}\times 10^{3}\bigr)}{\log_{10}\!\bigl(\text{Point Density (points m}^{-2})\bigr)}\times 5,
+$$
 
-## 3. Mesh & 3-D Model Metrics
+where a lower value signals finer, better-balanced data.  The two driving parameters are themselves fundamental: scan resolution indicates the smallest feature distinguishable in millimetres, and point density expresses how many points fall on each square metre of surface.  Sub-millimetre resolutions (for example 0.5 mm) enable the study of tool-marks, while densities above 10 000 points m-² reveal surface textures in exceptional detail.
 
-| Concept                         | Description                                                                             | Formula / Definition                                                                                                                 |
-| ------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **Mesh Complexity Ratio (MCR)** | Relates face count to resolution; indicates topological richness.                       | $\displaystyle \text{MCR}= \frac{\text{Mesh Faces}}{\text{Mesh Vertices}\times\text{Mesh Resolution (mm)}^{2}}\times10^{3}$          |
-| **Texture Density Index (TDI)** | Pixel density of textures relative to geometric complexity.                             | $\displaystyle \text{TDI}= \frac{\text{Texture Size (px)}}{\sqrt{\text{Mesh Faces}}\times\text{Mesh Resolution (mm)}}\times10^{-2}$  |
-| **Model Fidelity Score (MFS)**  | Combines topology, texture, and geometric accuracy for overall fidelity.                | $\displaystyle \text{MFS}= \text{MCR}\times\!\Bigl(\tfrac{\text{TDI}}{10}\Bigr)\times\!\bigl(1+e^{-\text{Geom Accuracy (mm)}}\bigr)$ |
-| **Mesh-to-Point Ratio (MPR)**   | Measures decimation efficiency when generating meshes.                                  | $\displaystyle \text{MPR}= \frac{\text{Mesh Vertices}}{\text{Total Points}}\times100\times\Bigl(\tfrac{\text{MCR}}{10}\Bigr)^{0.3}$  |
-| **High-Fidelity Mesh**          | Criteria: **MCR > 5.0**, **Mesh Resolution < 1.0 mm**, **Geometric Accuracy < 0.5 mm**. |                                                                                                                                      |
-| **Mesh Quality Classification** | • *Has High-Fidelity Meshes*  • *Standard Mesh Quality*  • *No Mesh Data*               |                                                                                                                                      |
-| **Resource-Intensive Model**    | Any model with **Mesh Faces > 2 M** *and* **MPR < 15**; needs high-end hardware.        |                                                                                                                                      |
+Coverage matters as much as sharpness.  **Scan Coverage Effectiveness (SCE)** folds two spatial measures—coverage percentage and overlap percentage—into one figure:
 
----
+$$
+\text{SCE}=C\!\times\!\Bigl(1+\frac{L}{100}\bigl(1-\frac{C}{100}\bigr)\Bigr),
+$$
 
-## 4. Processing & Equipment Performance
+with $C$ the proportion of the target that is actually scanned and $L$ the fractional overlap between successive passes.  Adequate overlap can rescue otherwise patchy coverage; SCE rewards that synergy.
 
-| Concept                                   | Description                                                                     | Formula / Definition                                                                                                                                                                                                              |
-| ----------------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Processing Efficiency Ratio (PER)**     | Efficiency of processing time vs. data size and complexity.                     | $\displaystyle \text{PER}= \frac{\text{File Size (GB)}\;\log_{10}(\text{Total Points})}{\text{Processing Hours}\times (\text{CPU \%}+\text{GPU \%})/200}$                                                                         |
-| **Processing Resource Utilization (PRU)** | How economically CPU/GPU hours were spent for mesh complexity.                  | $\displaystyle \text{PRU}= \frac{\text{Processing Hours}\times(\text{CPU \%}+\text{GPU \%})/2}{\text{File Size (GB)}\times10\;\log_{10}(\text{Mesh Vertices}+10^{4})}$                                                            |
-| **Processing Bottleneck**                 | **PER < 0.5** ⇒ probable hardware or workflow constraint.                       |                                                                                                                                                                                                                                   |
-| **Workflow Efficiency Classification**    | • *Optimized* (PRU < 5)  • *Acceptable* (5–10)  • *Needs Optimization* (> 10)   |                                                                                                                                                                                                                                   |
-| **Processing Optimized Workflow**         | *PRU < 5* **and** *MFS > 7.0*—balanced quality & resources.                     |                                                                                                                                                                                                                                   |
-| **Equipment Effectiveness Ratio (EER)**   | Utilization of equipment condition, power and scan quality.                     | $\displaystyle \text{EER}= \frac{\text{SQS} \times \text{EquipConditionFactor}}{\text{Battery \%}\left(1-\frac{\text{Days since Calibration}}{365}\right)} \times25$ (where EquipConditionFactor = 1.0 – 0.2 for Excellent→Poor). |
-| **Equipment Optimization Opportunity**    | **EER < 30** *and* **ESI > 80**—favourable conditions but sub-optimal settings. |                                                                                                                                                                                                                                   |
+Three core indicators—resolution (via SRI), coverage (via SCE) and noise—merge in the **Scan Quality Score (SQS)**:
 
----
+$$
+\text{SQS}= \bigl(\tfrac{10}{\text{SRI}}\bigr)^{1.5} 
+           \times \Bigl(\tfrac{\text{SCE}}{100}\Bigr)
+           \times \Bigl(1-\tfrac{\text{Noise (dB)}}{30}\Bigr)^{2}.
+$$
 
-## 5. Registration & Alignment Accuracy
+Because SQS scales resolution exponentially, gains in sharpness can dominate the overall grade, provided they are not undermined by noise.
 
-| Concept                               | Description                                                                            | Formula / Definition                                                                                                                                                                  |
-| ------------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Registration Accuracy Ratio (RAR)** | Tests whether alignment accuracy surpasses scan resolution.                            | $\displaystyle \text{RAR}= \frac{\text{Scan Resolution (mm)}}{\text{Registration Accuracy (mm)}\;\sqrt{1+\tfrac{\text{Registration Error (mm)}}{\text{Registration Accuracy (mm)}}}}$ |
-| **Registration Quality Threshold**    | Acceptable registration if **Accuracy < 1 mm** *and* **Error < 2 mm**.                 |                                                                                                                                                                                       |
-| **Registration Confidence Level**     | *High* : **RAR > 1.5** & method includes “Target” • *Medium* : 1.0–1.5 • *Low* : < 1.0 |                                                                                                                                                                                       |
+Building on these metrics, several domain definitions follow:
 
----
+* A **High-Resolution Scan** achieves a physical resolution of 1.0 mm or finer while sustaining at least 1 000 points m-².
+* **Comprehensive Coverage** demands $C\ge 95\%$ and $L\ge 30\%$.
+* A **Premium Quality Scan** satisfies both criteria above and yields an SQS greater than 7.5, making it suitable for conservation planning and publication.
 
-## 6. Composite Documentation & Preservation Metrics
+Time efficiency is tracked by the **Scan Time Efficiency (STE)** indicator,
 
-| Concept                                             | Description                                                                                                                                                                                                                               | Formula / Definition                                                                                                                                                    |
-| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Archaeological Documentation Completeness (ADC)** | Aggregates SQS, MFS & SCE against noise.                                                                                                                                                                                                  | $\displaystyle \text{ADC}= 0.4\,\text{SQS}+0.4\,\text{MFS}+0.2\,\text{SCE}-5\sqrt{\tfrac{\text{Noise (dB)}}{10}}$                                                       |
-| **Digital Preservation Quality (DPQ)**              | Holistic score blending documentation, fidelity, registration & coverage.                                                                                                                                                                 | $\displaystyle \text{DPQ}= 0.3\,\text{ADC}+0.3\,\text{MFS}+0.2\,\text{RAR}+0.2\,\text{SCE}-2\sqrt{\tfrac{\text{Registration Error (mm)}}{\text{Scan Resolution (mm)}}}$ |
-| **Scan Coverage Definitions**                       | **High Resolution Scan** : Scan‐resolution ≤ 1 mm & density ≥ 1,000 pts/m²<br>**Comprehensive Coverage** : Coverage ≥ 95 % & Overlap ≥ 30 %<br>**Premium Quality Scan** : High-Resolution *and* Comprehensive Coverage with **SQS > 7.5** |                                                                                                                                                                         |
-| **Full Archaeological Digital Twin**                | A site possessing Premium Quality Scans, a High-Fidelity Mesh, Registration Quality Threshold met, **ADC > 85**.                                                                                                                          |                                                                                                                                                                         |
-| **Multi-Phase Documentation Project**               | Projects where individual scans have **ADC < 70**, yet combined **DPQ > 80**, showing holistic success through phased strategy.                                                                                                           |                                                                                                                                                                         |
+$$
+\text{STE}= \frac{\text{SQS}\times\sqrt{C}}{\text{Scan Duration (min)}\times\sqrt{\text{Number of Passes}}},
+$$
 
----
+while environmental influence is isolated in the **Environmental Impact Factor (EIF)**,
 
-## 7. Conservation & Risk Assessment
+$$
+\text{EIF}= \frac{\text{SQS}}{\text{ESI}+10}\times 100,
+$$
 
-| Concept                               | Description                                                                                                                                                                                                                                                                                                         | Formula / Definition |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| **Degradation Risk Zone**             | Sites with Preservation Status = *Poor*/*Critical* **and** Structure State ≠ *Stable*.                                                                                                                                                                                                                              |                      |
-| **Conservation Priority Index (CPI)** | Combines condition, age & rarity.  <br>For Risk-Zone sites: $100 - \text{PS} + \text{Age}_{\text{(kyr)}}\!\left(1+\tfrac{\text{Type Site Score}}{10}\right)$ <br>Otherwise: $50 - \text{PS} + \text{Age}_{\text{(kyr)}}\!\left(1+\tfrac{\text{Type Site Score}}{20}\right)$ <br>(PS: 10–90 scale, lower is better). |                      |
-| **Conservation Emergency**            | Risk-Zone site with **CPI > 75** → needs immediate action and Premium Quality Scans.                                                                                                                                                                                                                                |                      |
-| **Digital Conservation Priority**     | Risk-Zone sites older than 1000 BCE *or* classed as *Rare/Unique* artifacts receive top digital-preservation priority.                                                                                                                                                                                              |                      |
-| **High Temporal Value Site**          | Sites dated *before 500 CE* with **CPI > 60**—exceptional historical significance.                                                                                                                                                                                                                                  |                      |
-| **Risk Zone Category**                | *Degradation Risk Zone* **vs.** *Not in Risk Zone*.                                                                                                                                                                                                                                                                 |                      |
+where ESI is the Environmental Suitability Index described later.
+
+For sites with large footprints we compare total points to footprint area through the **Spatial Density Index (SDI)**,
+
+$$
+\text{SDI}= \frac{\text{Total Points}}
+                 {\text{Surface Area (m}^{2})\times 10^{4}}
+            \times\Bigl(\frac{\text{Point Density}}{\text{Density Code}}\Bigr)^{1/2}.
+$$
+
+Locations with $\text{Area}>100\,\text{m}^{2}$ and $\text{SDI}>50$ fall under the category of **Spatially Complex Sites**, which require multi-station strategies.
 
 ---
 
-## 8. Feature-Extraction & Texture Analysis
+### 2.  Mesh and Texture Fidelity
 
-| Concept                                 | Description                                                                                                   | Formula / Definition                                                                                                                 |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **Feature Extraction Efficiency (FEE)** | Detects efficiency of feature & artifact identification.                                                      | $\displaystyle \text{FEE}= \frac{\text{Features}+\text{Artifacts}}{\text{PCDR}\,\sqrt{\text{Point-Cloud Density Code}}}\times10^{3}$ |
-| **Texture-Critical Artifact**           | An artifact where Texture Study requires “Detailed/Critical” *and* **TDI > 8.0**, demanding advanced imaging. |                                                                                                                                      |
+Once point clouds are meshed, geometric detail is gauged by the **Mesh Complexity Ratio (MCR)**:
 
----
+$$
+\text{MCR}= \frac{\text{Face Count}}
+                 {\text{Vertex Count}\times\text{(Mesh Resolution mm)}^{2}}\times10^{3}.
+$$
 
-## 9. Classification Systems & Domain Standards
+Textural richness is captured by the \*\*Texture Density Index (TDI)}:
 
-*These domain rules draw upon the metrics above to guide project planning, resource allocation and reporting.*
+$$
+\text{TDI}= \frac{\text{Texture Pixels}}
+                 {\sqrt{\text{Face Count}}\times\text{Mesh Resolution mm}}\times10^{-2}.
+$$
 
-* **Premium Quality Scan** (see §6)
-* **High-Fidelity Mesh** (see §3)
-* **Full Archaeological Digital Twin** (see §6)
-* **Processing Optimized Workflow** (see §4)
-* **Processing Bottleneck** / **Workflow Efficiency Classification** (see §4)
-* **Registration Quality Threshold** & **Confidence Levels** (see §5)
-* **Environmental Condition Classification System** (see §1)
-* **Spatially Complex Site**, **Resource-Intensive Model**, **Texture-Critical Artifact** (see §§2–3, 8)
-* **Degradation Risk Zone**, **Conservation Emergency**, **Digital Conservation Priority**, **High Temporal Value Site** (see §7)
-* **Equipment Optimization Opportunity** (see §4)
+These two combine with geometric accuracy in millimetres ($\Delta_\text{geom}$) to form the **Model Fidelity Score (MFS)**,
 
----
+$$
+\text{MFS}= \text{MCR}\times\Bigl(\tfrac{\text{TDI}}{10}\Bigr)
+             \times\bigl(1+e^{-\Delta_\text{geom}}\bigr).
+$$
 
-## 10. Value Illustrations – Making Numbers Meaningful
+A mesh is classified as a **High-Fidelity Mesh** when
+MCR > 5.0, the underlying resolution is under 1 mm, and geometric deviation is below 0.5 mm.
 
-*These contextual examples help non-specialists interpret key parameters.*
+Down-stream performance questions are answered by the **Mesh-to-Point Ratio (MPR)**,
 
-| Parameter                            | Practical Meaning                                                                     |
-| ------------------------------------ | ------------------------------------------------------------------------------------- |
-| **Scan Resolution (mm)**             | 0.5 mm → registers fine tool-marks; 2 mm → captures only general forms.               |
-| **Point Density (pts/m²)**           | 100 → basic topography • 1 000 → structural detail • 10 000+ → engravings & textures. |
-| **Noise Level (dB)**                 | < 1.0 → exceptionally clean data • > 3.0 → feature recognition at risk.               |
-| **Coverage (%)**                     | ≥ 95 % → virtually complete site documentation; 80 % leaves significant gaps.         |
-| **Geometric Accuracy (mm)**          | < 0.1 mm → museum-grade precision • ≈ 1 mm → suitable for general records.            |
-| **Cultural Period** (*Phase Factor*) | E.g. Neolithic, Bronze Age, Roman, Medieval—guides methods & interpretation.          |
-| **Estimated Dating** (*Guess Date*)  | Ranges from “3500–3000 BCE” to “ca. 1450 CE”—precision depends on evidence.           |
-| **Structural State**                 | *Stable* / *Unstable* / *Critical*—directs urgency of conservation.                   |
-| **Processing Stage**                 | *Raw* → *Aligned* → *Cleaned* → *Meshed* → *Textured* milestones.                     |
-| **Registration Method**              | *ICP*, *Target-based*, *Hybrid*, *SLAM*—each with distinct accuracy profiles.         |
+$$
+\text{MPR}= \frac{\text{Vertex Count}}{\text{Total Points}}\times 100
+            \times\Bigl(\frac{\text{MCR}}{10}\Bigr)^{0.3},
+$$
 
----
+where values near 25–30 % mark an optimal balance between detail and data economy.
+Models exceeding two million faces yet showing MPR below 15 are flagged as **Resource-Intensive Models** that call for hardware acceleration or level-of-detail schemes.
 
-### **How to Use This Knowledge Bank**
+Finally, mesh presence is summarised by the **Mesh Quality Classification**:
 
-1. **Project Planning** – Select equipment and schedule fieldwork by checking *ECCS* and aiming for *Optimal Scanning Conditions*.
-2. **Live Quality Control** – Calculate *SRI*, *SCE* and *SQS* on-site for immediate feedback.
-3. **Data Processing** – Monitor *PER* and *PRU* to avoid *Processing Bottlenecks*; strive for an *Optimized Workflow*.
-4. **Model Assessment** – Employ *MCR*, *TDI* and *MFS* to verify that meshes meet publication-grade fidelity.
-5. **Risk-Driven Conservation** – Combine *CPI* with *Degradation Risk Zone* status to trigger timely conservation actions.
-6. **Digital Twin Certification** – Confirm that finished datasets meet the *Full Archaeological Digital Twin* standard before archival or public release.
+* *Has High-Fidelity Meshes*,
+* *Standard Mesh Quality*, or
+* *No Mesh Data*.
 
 ---
 
+### 3.  Environmental Conditions
+
+The **Environmental Suitability Index (ESI)** quantifies how friendly the surroundings were at the moment of capture:
+
+$$
+\text{ESI}= 100 - 2.5\,\lvert T-20\rvert
+            -\Bigl|\tfrac{H-50}{2}\Bigr|^{1.5}
+            -\frac{600}{L+100},
+$$
+
+where $T$ is ambient temperature (°C), $H$ relative humidity (%), and $L$ illuminance (lux).  Temperate weather, mid-range humidity and bright light all drive ESI upwards.
+Conditions with ESI above 85 are deemed **Optimal Scanning Conditions**.  A four-tier **Environmental Condition Classification System** distinguishes *Optimal*, *Good* (70–85), *Acceptable* (50–70) and *Challenging* (< 50) sessions.
+
+If scanning succeeds under unfavourable circumstances to the point that EIF rises above 120, the dataset earns the label **Environmental-Challenge Scan**, acknowledging the operator’s skill and adaptive methodology.
+
+---
+
+### 4.  Processing Performance
+
+Back in the lab, efficiency is scrutinised with the **Processing Efficiency Ratio (PER)**,
+
+$$
+\text{PER}= \frac{\text{File Size (GB)}\times \log_{10}(\text{Total Points})}
+                 {\text{Processing Hours}\times \frac{\text{CPU Usage}+ \text{GPU Usage}}{200}},
+$$
+
+and also by the **Processing Resource Utilization (PRU)**,
+
+$$
+\text{PRU}= \frac{\text{Processing Hours}\times(\text{CPU}+ \text{GPU})/2}
+                 {\text{File Size (GB)}\times 10\times \log_{10}(\text{Vertex Count}+10^{4})}.
+$$
+
+Workflows with PRU under 5.0 and MFS above 7.0 achieve the status **Processing Optimized Workflow**.
+We further classify every job through the **Workflow Efficiency Classification**: *Optimized* (PRU < 5), *Acceptable* (5–10) and *Needs Optimization* (> 10).
+Whenever PER slips below 0.5 the record is tagged **Processing Bottleneck**, pointing to hardware or configuration limitations.
+
+---
+
+### 5.  Registration Accuracy
+
+Alignment integrity is expressed by the **Registration Accuracy Ratio (RAR)**:
+
+$$
+\text{RAR}= \frac{\text{Scan Resolution (mm)}}
+                 {\text{Registration Accuracy (mm)}
+                 \,\sqrt{1+\tfrac{\text{Registration Error (mm)}}{\text{Registration Accuracy (mm)}}}}.
+$$
+
+Pairs where the accuracy surpasses resolution (RAR > 1) are desirable.
+A log accuracy below 1 mm and total error under 2 mm fulfil the **Registration Quality Threshold**.
+Confidence then follows a three-level scheme:
+
+* *High Confidence* (RAR > 1.5 and a target-based method),
+* *Medium Confidence* (1.0–1.5),
+* *Low Confidence* (< 1.0).
+
+---
+
+### 6.  Documentation Completeness and Preservation Value
+
+Point-by-point quality rolls up into project-level completeness.
+The **Archaeological Documentation Completeness (ADC)** score blends scan quality, model fidelity and coverage:
+
+$$
+\text{ADC}= 0.4\,\text{SQS} + 0.4\,\text{MFS} + 0.2\,\text{SCE}
+            - 5\sqrt{\frac{\text{Noise (dB)}}{10}}.
+$$
+
+ADC feeds into the **Digital Preservation Quality (DPQ)** metric,
+
+$$
+\text{DPQ}= 0.3\,\text{ADC}+0.3\,\text{MFS}+0.2\,\text{RAR}+0.2\,\text{SCE}
+            - 2\,\sqrt{\frac{\text{Registration Error (mm)}}{\text{Scan Resolution (mm)}}}.
+$$
+
+A site that hosts Premium Quality Scans, at least one High-Fidelity Mesh, meets the Registration Quality Threshold, and whose ADC exceeds 85 constitutes a **Full Archaeological Digital Twin** ready for scholarship, conservation and virtual presentation.
+
+Complex undertakings sometimes require phased campaigns: if individual scans fall below ADC 70 yet their combined DPQ exceeds 80, the effort is classified as a **Multi-Phase Documentation Project**.
+
+---
+
+### 7.  Conservation Priority and Risk
+
+Field conditions and structural condition dictate urgency.
+The **Degradation Risk Zone** flag is raised when preservation status is *Poor* or *Critical* and structural state is not *Stable*.  For such cases, the **Conservation Priority Index (CPI)** quantifies urgency:
+
+$$
+\text{CPI}= 
+\begin{cases}
+100-P_{\!s}+A\bigl(1+\tfrac{T}{10}\bigr), & \text{if in a Degradation Risk Zone} \\
+50-P_{\!s}+A\bigl(1+\tfrac{T}{20}\bigr),  & \text{otherwise}\!,
+\end{cases}
+$$
+
+where $P_{\!s}$ scores condition (Excellent = 10 through Critical = 90),
+$A$ is age in millennia (from estimated dating), and $T$ measures site rarity on a 0–10 scale.
+Values above 75 coupled with risk-zone status trigger a **Conservation Emergency**; values over 60 for sites datable earlier than 500 CE mark a **High Temporal Value Site**.
+
+By policy, **Digital Conservation Priority** is highest when a Degradation Risk Zone overlaps extreme antiquity or unique site typology, prompting immediate Premium Quality scanning.
+
+A simpler two-slot **Risk Zone Category** summarises whether a site is or is not in a Degradation Risk Zone.
+
+---
+
+### 8.  Equipment Effectiveness
+
+To judge hardware usage we calculate the **Equipment Effectiveness Ratio (EER)**:
+
+$$
+\text{EER}= \frac{\text{SQS}\times S_{\!e}}{\text{Battery Level}
+                 \times\bigl(101-\text{Age (days)}\bigr)/365}\times 25,
+$$
+
+where $S_{\!e}$ converts condition labels (*Excellent* = 1.0 down to *Poor* = 0.2).
+EER below 30 despite favourable ESI (> 80) indicates an **Equipment Optimization Opportunity**, suggesting calibration or parameter refinements could raise quality.
+
+---
+
+### 9.  Feature Extraction
+
+Efficiency of interpretation is gauged by the **Feature Extraction Efficiency (FEE)**,
+
+$$
+\text{FEE}= \frac{\text{Features}+ \text{Artifacts}}
+                 {\text{PCDR}\times\sqrt{\text{Density Code}}}\times 10^{3},
+$$
+
+with PCDR the **Point Cloud Density Ratio**,
+
+$$
+\text{PCDR}= \frac{\text{Total Points}}
+                  {\text{Density Code}\times\text{Surface Area (m}^{2})}.
+$$
+
+Where surface patterns are crucial, any find whose texture analysis is tagged *Detailed* or *Critical* and whose TDI exceeds 8.0 becomes a **Texture-Critical Artifact** and may call for multispectral imaging or photometric stereo.
+
+---
+
+### 10.  Integrated Classifications
+
+Combining the foregoing metrics enables higher-order decision making:
+
+* **Premium Quality Scan** and **Full Archaeological Digital Twin** designate data sets already fit for research and long-term stewardship.
+* **Processing Optimized Workflow** and **Workflow Efficiency Classification** direct attention to computational performance.
+* **Risk Zone Category**, **Conservation Emergency** and **High Temporal Value Site** focus conservation resources.
+* **Environmental Condition Classification System** schedules fieldwork.
+* **Mesh Quality Classification**, **Resource-Intensive Model** and **Spatially Complex Site** influence post-processing and visualisation strategy.
+* **Registration Confidence Level** governs downstream spatial analysis.
+
+Together, these interlocking measures provide a rigorous, quantitative framework for acquiring, processing and safeguarding digital records of the archaeological record, ensuring that each scan contributes effectively to scholarship and conservation.

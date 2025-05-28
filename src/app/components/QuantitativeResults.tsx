@@ -22,87 +22,183 @@ const Leaderboard = () => {
     modelBase: [
       { 
         name: 'o3-mini-2025-01-31',
-        completionRate: 42.59,
+        completionRate: 44.81,
         logo: `${getBasePath()}/model_logos/openai_reasoning.png`,
         fullName: 'o3-mini',
         category: 'modelBase',
         organization: 'OpenAI',
         link: 'https://openai.com',
-        date: '2025-05-23',
+        date: '2025-05-28',
         hasReasoning: true,
-        cost: '0.0237'
+        cost: '0.0233'
       },
       { 
-        name: 'qwen-qwen3-235b-a22b',
-        completionRate: 35.93,
-        logo: `${getBasePath()}/model_logos/qwen.png`,
-        fullName: 'Qwen 3 235B',
-        category: 'modelBase',
-        organization: 'Alibaba',
-        link: 'https://qwenlm.github.io',
-        date: '2025-05-23',
-        hasReasoning: false,
-        cost: '0.0044'
-      },
-      { 
-        name: 'gemini-2-0-flash-001',
-        completionRate: 35.56,
-        logo: `${getBasePath()}/model_logos/google-gemini-icon.png`,
-        fullName: 'Gemini 2.0 Flash',
-        category: 'modelBase',
-        organization: 'Google',
-        link: 'https://deepmind.google/technologies/gemini/',
-        date: '2025-05-23',
-        hasReasoning: false,
-        cost: '0.0019'
-      },
-      { 
-        name: 'gpt-4o-2024-11-20',
-        completionRate: 34.81,
+        name: 'gpt-4.1',
+        completionRate: 40.00,
         logo: `${getBasePath()}/model_logos/openai.png`,
-        fullName: 'GPT-4o',
+        fullName: 'GPT-4.1',
         category: 'modelBase',
         organization: 'OpenAI',
         link: 'https://openai.com',
-        date: '2025-05-23',
+        date: '2025-05-28',
         hasReasoning: false,
-        cost: '0.0458'
+        cost: '0.0336'
+      },
+      { 
+        name: 'o3',
+        completionRate: 37.40,
+        logo: `${getBasePath()}/model_logos/openai_reasoning.png`,
+        fullName: 'o3',
+        category: 'modelBase',
+        organization: 'OpenAI',
+        link: 'https://openai.com',
+        date: '2025-05-28',
+        hasReasoning: true,
+        cost: '0.2129'
+      },
+      { 
+        name: 'o4-mini',
+        completionRate: 37.80,
+        logo: `${getBasePath()}/model_logos/openai.png`,
+        fullName: 'o4-mini',
+        category: 'modelBase',
+        organization: 'OpenAI',
+        link: 'https://openai.com',
+        date: '2025-05-28',
+        hasReasoning: false,
+        cost: '0.0231'
+      },
+      { 
+        name: 'o1-preview-2024-09-12',
+        completionRate: 37.03,
+        logo: `${getBasePath()}/model_logos/openai_reasoning.png`,
+        fullName: 'o1-preview',
+        category: 'modelBase',
+        organization: 'OpenAI',
+        link: 'https://openai.com',
+        date: '2025-05-28',
+        hasReasoning: true,
+        cost: '0.4310'
+      },
+      { 
+        name: 'gemini-2.5-flash-preview-05-20:thinking',
+        completionRate: 37.03,
+        logo: `${getBasePath()}/model_logos/google-gemini-icon.png`,
+        fullName: 'Gemini 2.5 Flash (Thinking)',
+        category: 'modelBase',
+        organization: 'Google',
+        link: 'https://deepmind.google/technologies/gemini/',
+        date: '2025-05-28',
+        hasReasoning: true,
+        cost: '0.0165'
+      },
+      { 
+        name: 'claude-sonnet-4-20250514',
+        completionRate: 36.70,
+        logo: `${getBasePath()}/model_logos/claude_logo.png`,
+        fullName: 'Claude Sonnet 4',
+        category: 'modelBase',
+        organization: 'Anthropic',
+        link: 'https://www.anthropic.com',
+        date: '2025-05-28',
+        hasReasoning: false,
+        cost: '0.0623'
       },
       { 
         name: 'claude-3-7-sonnet-20250219',
-        completionRate: 32.96,
+        completionRate: 34.81,
         logo: `${getBasePath()}/model_logos/claude_logo.png`,
         fullName: 'Claude 3.7 Sonnet',
         category: 'modelBase',
         organization: 'Anthropic',
         link: 'https://www.anthropic.com',
-        date: '2025-05-23',
+        date: '2025-05-28',
         hasReasoning: false,
-        cost: '0.0646'
+        cost: '0.0771'
       },
       { 
-        name: 'deepsseek-deepseek-r1',
-        completionRate: 0,
+        name: 'gpt-4o-2024-11-20',
+        completionRate: 31.48,
+        logo: `${getBasePath()}/model_logos/openai.png`,
+        fullName: 'GPT-4o',
+        category: 'modelBase',
+        organization: 'OpenAI',
+        link: 'https://openai.com',
+        date: '2025-05-28',
+        hasReasoning: false,
+        cost: '0.0412'
+      },
+      { 
+        name: 'o1-mini',
+        completionRate: 32.96,
+        logo: `${getBasePath()}/model_logos/openai_reasoning.png`,
+        fullName: 'o1-mini',
+        category: 'modelBase',
+        organization: 'OpenAI',
+        link: 'https://openai.com',
+        date: '2025-05-28',
+        hasReasoning: true,
+        cost: '0.0788'
+      },
+      { 
+        name: 'gemini-2-0-flash',
+        completionRate: 30.37,
+        logo: `${getBasePath()}/model_logos/google-gemini-icon.png`,
+        fullName: 'Gemini 2.0 Flash',
+        category: 'modelBase',
+        organization: 'Google',
+        link: 'https://deepmind.google/technologies/gemini/',
+        date: '2025-05-28',
+        hasReasoning: false,
+        cost: '0.0027'
+      },
+      { 
+        name: 'ds-v3',
+        completionRate: 30.37,
+        logo: `${getBasePath()}/model_logos/deepseek_logo.png`,
+        fullName: 'DeepSeek V3',
+        category: 'modelBase',
+        organization: 'DeepSeek',
+        link: 'https://deepseek.com',
+        date: '2025-05-28',
+        hasReasoning: false,
+        cost: '0.0047'
+      },
+      { 
+        name: 'ds-r1',
+        completionRate: 27.78,
         logo: `${getBasePath()}/model_logos/deepseek_logo.png`,
         fullName: 'DeepSeek R1',
         category: 'modelBase',
         organization: 'DeepSeek',
         link: 'https://deepseek.com',
-        date: '2025-05-23',
+        date: '2025-05-28',
         hasReasoning: true,
-        cost: '/'
+        cost: '0.0165'
       },
       { 
-        name: 'deepsseek-deepseek-chat',
-        completionRate: 0,
-        logo: `${getBasePath()}/model_logos/deepseek_logo.png`,
-        fullName: 'DeepSeek Chat',
+        name: 'llama4-maverick-instruct-basic',
+        completionRate: 27.40,
+        logo: `${getBasePath()}/model_logos/meta.png`,
+        fullName: 'Llama 4 Maverick',
         category: 'modelBase',
-        organization: 'DeepSeek',
-        link: 'https://deepseek.com',
-        date: '2025-05-23',
+        organization: 'Meta',
+        link: 'https://ai.meta.com/llama',
+        date: '2025-05-28',
         hasReasoning: false,
-        cost: '/'
+        cost: '0.0029'
+      },
+      { 
+        name: 'llama4-scout-instruct-basic',
+        completionRate: 16.70,
+        logo: `${getBasePath()}/model_logos/meta.png`,
+        fullName: 'Llama 4 Scout',
+        category: 'modelBase',
+        organization: 'Meta',
+        link: 'https://ai.meta.com/llama',
+        date: '2025-05-28',
+        hasReasoning: false,
+        cost: '0.0014'
       }
     ],
     agent: [] // Empty for now, will be populated later
@@ -156,7 +252,7 @@ const Leaderboard = () => {
           
           <div className="w-full">
             <div className="text-xs text-gray-600 text-right mb-2">
-              Last Updated: 05/23/2025
+              Last Updated: 05/28/2025
             </div>
 
             {/* Category Tabs */}
@@ -187,22 +283,22 @@ const Leaderboard = () => {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50 border-b">
-                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
+                    <th className="h-10 px-4 text-center align-middle font-medium text-gray-600">
                       Rank / Date
                     </th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-gray-600">
+                    <th className="h-10 px-4 text-left align-middle font-medium text-gray-600">
                       Model
                     </th>
-                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
+                    <th className="h-10 px-4 text-center align-middle font-medium text-gray-600">
                       Organization
                     </th>
-                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
+                    <th className="h-10 px-4 text-center align-middle font-medium text-gray-600">
                       Success Rate (%) <ArrowDown className="inline h-4 w-4 text-gray-400" />
                     </th>
-                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
-                      Avg. Cost / Task
+                    <th className="h-10 px-4 text-center align-middle font-medium text-gray-600">
+                      Avg. Cost (USD) / Task
                     </th>
-                    <th className="h-12 px-4 text-center align-middle font-medium text-gray-600">
+                    <th className="h-10 px-4 text-center align-middle font-medium text-gray-600">
                       Link
                     </th>
                   </tr>
@@ -216,9 +312,9 @@ const Leaderboard = () => {
                           index === 0 ? 'bg-blue-50' : ''
                         }`}
                       >
-                        <td className="p-4 align-middle text-center">
+                        <td className="py-2 px-4 align-middle text-center">
                           {model.completionRate > 0 ? (
-                            <div className="flex flex-col items-center justify-center gap-1">
+                            <div className="flex flex-col items-center justify-center gap-0.5">
                               <div className="flex items-center gap-1">
                                 {index === 0 && <span className="text-yellow-500">🥇</span>}
                                 {index === 1 && <span className="text-gray-400">🥈</span>}
@@ -229,7 +325,7 @@ const Leaderboard = () => {
                                   {index + 1}
                                 </span>
                               </div>
-                              <span className="mt-1 px-2 py-0.5 rounded bg-blue-100 text-xs text-blue-700 font-medium">
+                              <span className="px-2 py-0.5 rounded bg-blue-100 text-xs text-blue-700 font-medium">
                                 {model.date}
                               </span>
                             </div>
@@ -237,7 +333,7 @@ const Leaderboard = () => {
                             <span className="text-gray-400">-</span>
                           )}
                         </td>
-                        <td className="p-4 align-middle">
+                        <td className="py-2 px-4 align-middle">
                           <div className="flex items-center gap-3 justify-start">
                             <img
                               src={model.logo}
@@ -247,15 +343,15 @@ const Leaderboard = () => {
                             <span className="font-medium">{model.fullName}</span>
                           </div>
                         </td>
-                        <td className="p-4 align-middle text-center"> 
+                        <td className="py-2 px-4 align-middle text-center"> 
                           <span className="italic text-gray-500">{model.organization}</span>
                         </td>
-                        <td className="p-4 align-middle text-center font-medium">
+                        <td className="py-2 px-4 align-middle text-center font-medium">
                           {model.completionRate > 0 ? `${model.completionRate.toFixed(2)}` : 'N/A'}
                         </td>
-                        <td className="p-4 align-middle text-center font-medium">
+                        <td className="py-2 px-4 align-middle text-center font-medium">
                           {model.cost && model.cost !== '/' ? (
-                            <div className="inline-flex items-center px-1.5 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-green-50 to-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm">
+                            <div className="inline-flex items-center px-1.5 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-700 border border-amber-100 shadow-sm">
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -265,7 +361,7 @@ const Leaderboard = () => {
                             <span className="text-gray-400">-</span>
                           )}
                         </td>
-                        <td className="p-4 align-middle text-center">
+                        <td className="py-2 px-4 align-middle text-center">
                           <a 
                             href={model.link}
                             target="_blank"
@@ -290,7 +386,7 @@ const Leaderboard = () => {
             </div>
             
             <p className="mt-4 text-sm text-gray-600">
-              <span className="font-medium">Note:</span> Results are based on LiveSQLBench-Base-Lite (270 tasks across 18 end-user level databases), including both SELECT queries and management operations; Model with reasoning ability is marked with a grayed-out logo. 
+              <span className="font-medium">Note:</span> Results are based on LiveSQLBench-Base-Lite (270 tasks across 18 end-user level databases with HKB-JSON), including both SELECT queries and management operations; Model with reasoning ability is marked with a grayed-out logo. 
             </p>
           </div>
         </div>
